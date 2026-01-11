@@ -448,16 +448,3 @@ make clean
 ## License
 
 Apache 2.0
-
-## Behind the name
-
-In chess, the most powerful piece was originally called the
-[gar](https://en.wikipedia.org/wiki/Queen_(chess)#History)
-before it was renamed to "queen" in Europe. This piece moves
-freely across the board, coordinating the entire position
-and executing strategic plans.
-
-Similarly, GAR orchestrator acts as a powerful coordinator - not
-the primary decision-maker, but rather the executor that manages
-and coordinates multiple agents to fulfill tasks and respond
-to input, typically from humans.
