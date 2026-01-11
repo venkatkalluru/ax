@@ -52,7 +52,7 @@ func NewLoopExecutor(config LoopConfig) (*LoopExecutor, error) {
 		return nil, fmt.Errorf("session manager cannot be nil")
 	}
 	if config.MaxSteps == 0 {
-		config.MaxSteps = 100 // Default max steps
+		config.MaxSteps = 100 // Default max steps per trigger
 	}
 
 	// Provide default plan function if not specified
@@ -120,8 +120,11 @@ func (e *LoopExecutor) Resume(ctx context.Context, sessionID string) error {
 }
 
 // runLoop executes the main agentic loop.
+// It runs up to maxSteps iterations per trigger/resume invocation.
 func (e *LoopExecutor) runLoop(ctx context.Context, session *Session) error {
-	for session.CurrentStep < e.maxSteps {
+	steps := 0
+
+	for steps < e.maxSteps {
 		// Check context cancellation
 		select {
 		case <-ctx.Done():
@@ -164,8 +167,9 @@ func (e *LoopExecutor) runLoop(ctx context.Context, session *Session) error {
 			return fmt.Errorf("evaluation failed: %w", err)
 		}
 
-		// Phase 4: Advance step
+		// Phase 4: Advance step counters
 		session.AdvanceStep()
+		steps++
 
 		// If goal achieved, complete the session
 		if goalAchieved {
@@ -174,9 +178,8 @@ func (e *LoopExecutor) runLoop(ctx context.Context, session *Session) error {
 		}
 	}
 
-	// Max steps reached
-	session.SetState(proto.State_STATE_FAILED)
-	return fmt.Errorf("max steps (%d) reached", e.maxSteps)
+	// Can be resumed later with another trigger
+	return fmt.Errorf("max steps per trigger (%d) reached", e.maxSteps)
 }
 
 // executeTask sends input to an agent and collects output.
@@ -234,7 +237,6 @@ func (e *LoopExecutor) HandleLifecycleEvent(session *Session, event *proto.Lifec
 		// TODO: Update agent health status in registry
 	}
 }
-
 
 // defaultEvaluateFunc is a simple default evaluation function.
 // It considers the goal achieved after processing one step.

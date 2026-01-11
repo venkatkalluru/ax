@@ -199,6 +199,8 @@ eventlog:
   dir: "eventlog"
 
 controller:
+  # Maximum steps per trigger
+  max_steps: 50
   health_check_interval: 30s
 ```
 

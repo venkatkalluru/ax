@@ -29,7 +29,7 @@ type EventLogConfig struct {
 
 // ControllerConfig configures the controller behavior.
 type ControllerConfig struct {
-	MaxSteps            int           `yaml:"max_steps"`             // Maximum steps per session
+	MaxSteps            int           `yaml:"max_steps"`             // Maximum steps per trigger
 	HealthCheckInterval time.Duration `yaml:"health_check_interval"` // Health check interval for agents
 }
 
@@ -37,7 +37,7 @@ type ControllerConfig struct {
 // Note: API key is not configurable here for security reasons.
 // Set GEMINI_API_KEY environment variable instead.
 type GeminiPlannerConfig struct {
-	Model         string        `yaml:"model,omitempty"`    // Model name
+	Model         string        `yaml:"model,omitempty"` // Model name
 	Temperature   float32       `yaml:"temperature,omitempty"`
 	MaxTokens     int32         `yaml:"max_tokens,omitempty"`
 	Timeout       time.Duration `yaml:"timeout,omitempty"`
