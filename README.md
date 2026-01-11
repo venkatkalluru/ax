@@ -384,14 +384,15 @@ Then implement your agent using the framework:
 from gar import Agent
 import proto.gar_pb2 as pb2
 
-def process(content):
-    """Process incoming content and return response"""
-    return pb2.Content(
-        role="assistant",
-        type="text",
-        mimetype="text/plain",
-        data=f"Python processed: {content.data.upper()}"
-    )
+def process(inputs):
+    """Process incoming content list and yield responses"""
+    for content in inputs:
+        yield pb2.Content(
+            role="assistant",
+            type="text",
+            mimetype="text/plain",
+            data=f"Python processed: {content.data.upper()}"
+        )
 
 def health_check():
     """Health check function that always returns healthy"""

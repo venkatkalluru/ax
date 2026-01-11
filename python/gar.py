@@ -15,9 +15,10 @@ class Agent:
     Agent provides a simple framework for building Python agents.
 
     Usage:
-        def process(content):
-            return Content(role="assistant", type="text",
-                          mimetype="text/plain", data=f"Processed: {content.data}")
+        def process(inputs):
+            for content in inputs:
+                yield Content(role="assistant", type="text",
+                             mimetype="text/plain", data=f"Processed: {content.data}")
 
         agent = Agent(agent_id="my-agent", process_func=process)
         agent.serve(port=50051)
@@ -35,7 +36,7 @@ class Agent:
 
         Args:
             agent_id: Unique identifier for this agent
-            process_func: Function that processes Content and returns Content
+            process_func: Function that takes a list of Content and yields Content responses
             lifecycle_func: Optional function that yields LifecycleEvent objects
             health_check_func: Optional function that returns (healthy: bool, message: str, metadata: dict)
         """
@@ -50,8 +51,11 @@ class Agent:
 
         class AgentServicer(pb2_grpc.AgentServiceServicer):
             def Process(self, request_iterator, context):
-                for content in request_iterator:
-                    response = agent.process_func(content)
+                # Collect all content into a list
+                inputs = list(request_iterator)
+
+                # Process the list of content
+                for response in agent.process_func(inputs):
                     if response:
                         yield response
 
@@ -132,7 +136,7 @@ def create_agent(
 
     Args:
         agent_id: Unique identifier for this agent
-        process_func: Function that processes Content and returns Content
+        process_func: Function that takes a list of Content and yields Content responses
         lifecycle_func: Optional function that yields LifecycleEvent objects
         health_check_func: Optional function that returns (healthy: bool, message: str, metadata: dict)
         port: Port to listen on (default: 50051)
