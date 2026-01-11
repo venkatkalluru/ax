@@ -416,26 +416,6 @@ gar trigger \
   --input "Hello Python agent"
 ```
 
-## Development
-
-### Generate Protobuf Code
-
-```bash
-make proto
-```
-
-### Run Tests
-
-```bash
-make test
-```
-
-### Clean Build Artifacts
-
-```bash
-make clean
-```
-
 ## Future Enhancements
 
 - [ ] Remote agent deployment from a container image
