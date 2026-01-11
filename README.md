@@ -83,17 +83,17 @@ The gar server exposes the GARService on port :8494.
 ```bash
 # Register the remote agent with gar
 gar register \
-  --server localhost:8494 \
-  --agent-id remote-echo-agent \
-  --name "Echo Agent" \
-  --description "Echoes input in uppercase" \
-  --agent-addr localhost:50051
+    --server localhost:8494 \
+    --agent-id remote-echo-agent \
+    --name "Echo Agent" \
+    --description "Echoes input in uppercase" \
+    --agent-addr localhost:50051
 
 # Trigger a session - gar will trigger the remote agent via Process RPC
 gar trigger \
-  --server localhost:8494 \
-  --session-id session123 \
-  --input "Hello remote agent"
+    --server localhost:8494 \
+    --session-id session123 \
+    --input "Hello remote agent"
 
 # Inspect session details
 gar inspect --server localhost:8494 --session-id session123
@@ -109,10 +109,10 @@ The `gar` command provides several subcommands:
 
 ```bash
 gar trigger \
-  --server <address> \
-  [--session-id <id>] \
-  [--input <text>] \
-  [--checkpoint <uuid>]
+    --server <address> \
+    [--session-id <id>] \
+    [--input <text>] \
+    [--checkpoint <uuid>]
 ```
 
 Triggers a new agentic loop session or automatically resumes an existing one. If the session ID already exists, the session will be resumed from its last checkpoint (or a specific checkpoint if provided) with optional new inputs.
@@ -159,11 +159,11 @@ Options:
 
 ```bash
 gar register \
-  --server <address> \
-  --agent-id <id> \
-  --agent-addr <address> \
-  [--name <name>] \
-  [--description <desc>]
+    --server <address> \
+    --agent-id <id> \
+    --agent-addr <address> \
+    [--name <name>] \
+    [--description <desc>]
 ```
 
 Options:
