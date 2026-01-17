@@ -30,13 +30,13 @@ type Entry struct {
 // It provides methods for appending events, reading entries, and managing the log lifecycle.
 type EventLog interface {
 	// AppendContent appends a content message to the event log with a checkpoint UUID.
-	AppendContent(direction EventType, checkpointID string, content *proto.Content) error
+	AppendContent(t EventType, checkpointID string, content *proto.Content) error
 
 	// AppendLifecycleEvent appends a lifecycle event to the event log.
 	AppendLifecycleEvent(event *proto.LifecycleEvent) error
 
-	// GetEntries returns all entries from the event log in order.
-	GetEntries() ([]Entry, error)
+	// RetrieveEntries returns all entries from the event log in order.
+	RetrieveEntries() ([]Entry, error)
 
 	// Close closes the event log and releases any resources.
 	Close() error

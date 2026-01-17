@@ -110,7 +110,7 @@ func (sm *SessionManager) LoadSessionFromCheckpoint(sessionID string, checkpoint
 	defer replayLog.Close()
 
 	// Get all entries from the event log
-	entries, err := replayLog.GetEntries()
+	entries, err := replayLog.RetrieveEntries()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get event log entries: %w", err)
 	}

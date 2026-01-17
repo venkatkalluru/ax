@@ -157,9 +157,9 @@ func (e *FileEventLog) SessionID() string {
 	return e.sessionID
 }
 
-// GetEntries reads and returns all entries from the event log file.
+// RetrieveEntries reads and returns all entries from the event log file.
 // Returns entries in order.
-func (e *FileEventLog) GetEntries() ([]Entry, error) {
+func (e *FileEventLog) RetrieveEntries() ([]Entry, error) {
 	e.mu.Lock()
 	defer e.mu.Unlock()
 
