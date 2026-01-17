@@ -12,6 +12,8 @@ message Content {
   string type = 2;      // The type of content (e.g., "text", "image")
   string mimetype = 3;  // MIME type of the data (e.g., "text/plain", "image/png")
   string data = 4;      // The actual content data
+
+  // TODO: Replace Content with Interactions Content.
 }
 
 // LifecycleEvent represents events from agent lifecycle
