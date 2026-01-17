@@ -471,14 +471,13 @@ func (x *GetSessionRequest) GetSessionId() string {
 // SessionInfo contains session details
 type SessionInfo struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	SessionId       string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	State           State                  `protobuf:"varint,2,opt,name=state,proto3,enum=proto.State" json:"state,omitempty"`
-	CurrentStep     int32                  `protobuf:"varint,3,opt,name=current_step,json=currentStep,proto3" json:"current_step,omitempty"`
-	ActiveAgents    []string               `protobuf:"bytes,4,rep,name=active_agents,json=activeAgents,proto3" json:"active_agents,omitempty"`
-	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // Session creation time
-	UpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"` // Last update time
-	MessageCount    int32                  `protobuf:"varint,7,opt,name=message_count,json=messageCount,proto3" json:"message_count,omitempty"`
-	CheckpointCount int32                  `protobuf:"varint,8,opt,name=checkpoint_count,json=checkpointCount,proto3" json:"checkpoint_count,omitempty"`
+	State           State                  `protobuf:"varint,1,opt,name=state,proto3,enum=proto.State" json:"state,omitempty"`
+	CurrentStep     int32                  `protobuf:"varint,2,opt,name=current_step,json=currentStep,proto3" json:"current_step,omitempty"`
+	ActiveAgents    []string               `protobuf:"bytes,3,rep,name=active_agents,json=activeAgents,proto3" json:"active_agents,omitempty"`
+	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // Session creation time
+	UpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"` // Last update time
+	MessageCount    int32                  `protobuf:"varint,6,opt,name=message_count,json=messageCount,proto3" json:"message_count,omitempty"`
+	CheckpointCount int32                  `protobuf:"varint,7,opt,name=checkpoint_count,json=checkpointCount,proto3" json:"checkpoint_count,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -511,13 +510,6 @@ func (x *SessionInfo) ProtoReflect() protoreflect.Message {
 // Deprecated: Use SessionInfo.ProtoReflect.Descriptor instead.
 func (*SessionInfo) Descriptor() ([]byte, []int) {
 	return file_proto_gar_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *SessionInfo) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
 }
 
 func (x *SessionInfo) GetState() State {
@@ -843,19 +835,17 @@ const file_proto_gar_proto_rawDesc = "" +
 	"\rcheckpoint_id\x18\x03 \x01(\tR\fcheckpointId\"2\n" +
 	"\x11GetSessionRequest\x12\x1d\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\"\xde\x02\n" +
-	"\vSessionInfo\x12\x1d\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\"\xbf\x02\n" +
+	"\vSessionInfo\x12\"\n" +
+	"\x05state\x18\x01 \x01(\x0e2\f.proto.StateR\x05state\x12!\n" +
+	"\fcurrent_step\x18\x02 \x01(\x05R\vcurrentStep\x12#\n" +
+	"\ractive_agents\x18\x03 \x03(\tR\factiveAgents\x129\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12\"\n" +
-	"\x05state\x18\x02 \x01(\x0e2\f.proto.StateR\x05state\x12!\n" +
-	"\fcurrent_step\x18\x03 \x01(\x05R\vcurrentStep\x12#\n" +
-	"\ractive_agents\x18\x04 \x03(\tR\factiveAgents\x129\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
-	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12#\n" +
-	"\rmessage_count\x18\a \x01(\x05R\fmessageCount\x12)\n" +
-	"\x10checkpoint_count\x18\b \x01(\x05R\x0fcheckpointCount\"B\n" +
+	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12#\n" +
+	"\rmessage_count\x18\x06 \x01(\x05R\fmessageCount\x12)\n" +
+	"\x10checkpoint_count\x18\a \x01(\x05R\x0fcheckpointCount\"B\n" +
 	"\x12GetSessionResponse\x12,\n" +
 	"\asession\x18\x01 \x01(\v2\x12.proto.SessionInfoR\asession\"\x85\x02\n" +
 	"\x14RegisterAgentRequest\x12\x19\n" +

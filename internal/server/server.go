@@ -99,7 +99,6 @@ func (s *Server) GetSession(ctx context.Context, req *proto.GetSessionRequest) (
 
 	return &proto.GetSessionResponse{
 		Session: &proto.SessionInfo{
-			SessionId:       session.ID,
 			State:           session.State,
 			CurrentStep:     int32(session.CurrentStep),
 			ActiveAgents:    session.ActiveAgents,

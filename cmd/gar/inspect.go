@@ -50,7 +50,7 @@ func runInspect(cmd *cobra.Command, args []string) error {
 
 	// Print session details
 	fmt.Println("\nSession Details:")
-	fmt.Printf("  ID: %s\n", session.SessionId)
+	fmt.Printf("  ID: %s\n", inspectSessionID)
 	fmt.Printf("  State: %s\n", session.State)
 	fmt.Printf("  Current Step: %d\n", session.CurrentStep)
 	fmt.Printf("  Created At: %s\n", session.CreatedAt.AsTime().Format(time.RFC3339))
