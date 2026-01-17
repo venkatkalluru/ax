@@ -269,7 +269,6 @@ type HealthCheckResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Healthy       bool                   `protobuf:"varint,1,opt,name=healthy,proto3" json:"healthy,omitempty"`
 	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	Metadata      map[string]string      `protobuf:"bytes,3,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -316,13 +315,6 @@ func (x *HealthCheckResponse) GetMessage() string {
 		return x.Message
 	}
 	return ""
-}
-
-func (x *HealthCheckResponse) GetMetadata() map[string]string {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
 }
 
 // TriggerSessionRequest for triggering a new session
@@ -944,14 +936,10 @@ const file_proto_gar_proto_rawDesc = "" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"/\n" +
 	"\x12HealthCheckRequest\x12\x19\n" +
-	"\bagent_id\x18\x01 \x01(\tR\aagentId\"\xcc\x01\n" +
+	"\bagent_id\x18\x01 \x01(\tR\aagentId\"I\n" +
 	"\x13HealthCheckResponse\x12\x18\n" +
 	"\ahealthy\x18\x01 \x01(\bR\ahealthy\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x12D\n" +
-	"\bmetadata\x18\x03 \x03(\v2(.proto.HealthCheckResponse.MetadataEntryR\bmetadata\x1a;\n" +
-	"\rMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x83\x01\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\x83\x01\n" +
 	"\x15TriggerSessionRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12&\n" +
@@ -1030,7 +1018,7 @@ func file_proto_gar_proto_rawDescGZIP() []byte {
 }
 
 var file_proto_gar_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_proto_gar_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_proto_gar_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_proto_gar_proto_goTypes = []any{
 	(State)(0),                      // 0: proto.State
 	(*Content)(nil),                 // 1: proto.Content
@@ -1049,43 +1037,41 @@ var file_proto_gar_proto_goTypes = []any{
 	(*UnregisterAgentRequest)(nil),  // 14: proto.UnregisterAgentRequest
 	(*UnregisterAgentResponse)(nil), // 15: proto.UnregisterAgentResponse
 	nil,                             // 16: proto.LifecycleEvent.MetadataEntry
-	nil,                             // 17: proto.HealthCheckResponse.MetadataEntry
-	nil,                             // 18: proto.RegisterAgentRequest.MetadataEntry
-	(*timestamppb.Timestamp)(nil),   // 19: google.protobuf.Timestamp
+	nil,                             // 17: proto.RegisterAgentRequest.MetadataEntry
+	(*timestamppb.Timestamp)(nil),   // 18: google.protobuf.Timestamp
 }
 var file_proto_gar_proto_depIdxs = []int32{
-	19, // 0: proto.LifecycleEvent.timestamp:type_name -> google.protobuf.Timestamp
+	18, // 0: proto.LifecycleEvent.timestamp:type_name -> google.protobuf.Timestamp
 	16, // 1: proto.LifecycleEvent.metadata:type_name -> proto.LifecycleEvent.MetadataEntry
-	17, // 2: proto.HealthCheckResponse.metadata:type_name -> proto.HealthCheckResponse.MetadataEntry
-	1,  // 3: proto.TriggerSessionRequest.inputs:type_name -> proto.Content
-	0,  // 4: proto.TriggerSessionResponse.state:type_name -> proto.State
-	1,  // 5: proto.TriggerSessionResponse.output:type_name -> proto.Content
-	0,  // 6: proto.SessionInfo.state:type_name -> proto.State
-	19, // 7: proto.SessionInfo.created_at:type_name -> google.protobuf.Timestamp
-	19, // 8: proto.SessionInfo.updated_at:type_name -> google.protobuf.Timestamp
-	8,  // 9: proto.GetSessionResponse.session:type_name -> proto.SessionInfo
-	18, // 10: proto.RegisterAgentRequest.metadata:type_name -> proto.RegisterAgentRequest.MetadataEntry
-	1,  // 11: proto.AgentService.Process:input_type -> proto.Content
-	2,  // 12: proto.AgentService.StreamLifecycle:input_type -> proto.LifecycleEvent
-	3,  // 13: proto.AgentService.HealthCheck:input_type -> proto.HealthCheckRequest
-	5,  // 14: proto.GARService.TriggerSession:input_type -> proto.TriggerSessionRequest
-	7,  // 15: proto.GARService.GetSession:input_type -> proto.GetSessionRequest
-	10, // 16: proto.GARService.ListSessions:input_type -> proto.ListSessionsRequest
-	12, // 17: proto.GARService.RegisterAgent:input_type -> proto.RegisterAgentRequest
-	14, // 18: proto.GARService.UnregisterAgent:input_type -> proto.UnregisterAgentRequest
-	1,  // 19: proto.AgentService.Process:output_type -> proto.Content
-	2,  // 20: proto.AgentService.StreamLifecycle:output_type -> proto.LifecycleEvent
-	4,  // 21: proto.AgentService.HealthCheck:output_type -> proto.HealthCheckResponse
-	6,  // 22: proto.GARService.TriggerSession:output_type -> proto.TriggerSessionResponse
-	9,  // 23: proto.GARService.GetSession:output_type -> proto.GetSessionResponse
-	11, // 24: proto.GARService.ListSessions:output_type -> proto.ListSessionsResponse
-	13, // 25: proto.GARService.RegisterAgent:output_type -> proto.RegisterAgentResponse
-	15, // 26: proto.GARService.UnregisterAgent:output_type -> proto.UnregisterAgentResponse
-	19, // [19:27] is the sub-list for method output_type
-	11, // [11:19] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	1,  // 2: proto.TriggerSessionRequest.inputs:type_name -> proto.Content
+	0,  // 3: proto.TriggerSessionResponse.state:type_name -> proto.State
+	1,  // 4: proto.TriggerSessionResponse.output:type_name -> proto.Content
+	0,  // 5: proto.SessionInfo.state:type_name -> proto.State
+	18, // 6: proto.SessionInfo.created_at:type_name -> google.protobuf.Timestamp
+	18, // 7: proto.SessionInfo.updated_at:type_name -> google.protobuf.Timestamp
+	8,  // 8: proto.GetSessionResponse.session:type_name -> proto.SessionInfo
+	17, // 9: proto.RegisterAgentRequest.metadata:type_name -> proto.RegisterAgentRequest.MetadataEntry
+	1,  // 10: proto.AgentService.Process:input_type -> proto.Content
+	2,  // 11: proto.AgentService.StreamLifecycle:input_type -> proto.LifecycleEvent
+	3,  // 12: proto.AgentService.HealthCheck:input_type -> proto.HealthCheckRequest
+	5,  // 13: proto.GARService.TriggerSession:input_type -> proto.TriggerSessionRequest
+	7,  // 14: proto.GARService.GetSession:input_type -> proto.GetSessionRequest
+	10, // 15: proto.GARService.ListSessions:input_type -> proto.ListSessionsRequest
+	12, // 16: proto.GARService.RegisterAgent:input_type -> proto.RegisterAgentRequest
+	14, // 17: proto.GARService.UnregisterAgent:input_type -> proto.UnregisterAgentRequest
+	1,  // 18: proto.AgentService.Process:output_type -> proto.Content
+	2,  // 19: proto.AgentService.StreamLifecycle:output_type -> proto.LifecycleEvent
+	4,  // 20: proto.AgentService.HealthCheck:output_type -> proto.HealthCheckResponse
+	6,  // 21: proto.GARService.TriggerSession:output_type -> proto.TriggerSessionResponse
+	9,  // 22: proto.GARService.GetSession:output_type -> proto.GetSessionResponse
+	11, // 23: proto.GARService.ListSessions:output_type -> proto.ListSessionsResponse
+	13, // 24: proto.GARService.RegisterAgent:output_type -> proto.RegisterAgentResponse
+	15, // 25: proto.GARService.UnregisterAgent:output_type -> proto.UnregisterAgentResponse
+	18, // [18:26] is the sub-list for method output_type
+	10, // [10:18] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_proto_gar_proto_init() }
@@ -1099,7 +1085,7 @@ func file_proto_gar_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_gar_proto_rawDesc), len(file_proto_gar_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   18,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

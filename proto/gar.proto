@@ -31,7 +31,6 @@ message HealthCheckRequest {
 message HealthCheckResponse {
   bool healthy = 1;
   string message = 2;
-  map<string, string> metadata = 3;
 }
 
 // AgentService defines the gRPC service for agent communication
