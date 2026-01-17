@@ -8,6 +8,7 @@ import grpc
 from concurrent import futures
 import time
 from typing import Callable, Iterator, Optional, Dict
+from google.protobuf import timestamp_pb2
 
 
 class Agent:
@@ -66,11 +67,12 @@ class Agent:
                 else:
                     # Default: send periodic heartbeats
                     while context.is_active():
+                        timestamp = timestamp_pb2.Timestamp()
+                        timestamp.GetCurrentTime()
                         event = pb2.LifecycleEvent(
                             event_type="HEARTBEAT",
                             agent_id=agent.agent_id,
-                            timestamp=int(time.time() * 1000),
-                            metadata={"status": "active"}
+                            timestamp=timestamp
                         )
                         yield event
                         time.sleep(30)
