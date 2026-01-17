@@ -43,8 +43,7 @@ func (s *Server) TriggerSession(req *proto.TriggerSessionRequest, stream grpc.Se
 	}
 
 	if err := stream.Send(&proto.TriggerSessionResponse{
-		SessionId: sessionID,
-		State:     proto.State_STATE_STARTING,
+		State: proto.State_STATE_STARTING,
 	}); err != nil {
 		return err
 	}
@@ -52,8 +51,7 @@ func (s *Server) TriggerSession(req *proto.TriggerSessionRequest, stream grpc.Se
 	// Trigger the session
 	if err := s.controller.TriggerSession(stream.Context(), sessionID, inputs, checkpointID); err != nil {
 		stream.Send(&proto.TriggerSessionResponse{
-			SessionId: sessionID,
-			State:     proto.State_STATE_FAILED,
+			State: proto.State_STATE_FAILED,
 		})
 		return err
 	}
@@ -62,8 +60,7 @@ func (s *Server) TriggerSession(req *proto.TriggerSessionRequest, stream grpc.Se
 	session, err := s.controller.GetSession(sessionID)
 	if err != nil {
 		stream.Send(&proto.TriggerSessionResponse{
-			SessionId: sessionID,
-			State:     proto.State_STATE_FAILED,
+			State: proto.State_STATE_FAILED,
 		})
 		return err
 	}
@@ -76,7 +73,6 @@ func (s *Server) TriggerSession(req *proto.TriggerSessionRequest, stream grpc.Se
 
 	// Send final success response
 	return stream.Send(&proto.TriggerSessionResponse{
-		SessionId:    sessionID,
 		State:        session.State,
 		CheckpointId: latestCheckpointID,
 	})

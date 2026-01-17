@@ -63,10 +63,9 @@ message TriggerSessionRequest {
 
 // TriggerSessionResponse contains the result of triggering a session
 message TriggerSessionResponse {
-  string session_id = 1;
-  State state = 2;     // Session state
-  Content output = 3;
-  string checkpoint_id = 4;   // Checkpoint UUID for this response
+  State state = 1;     // Session state
+  Content output = 2;
+  string checkpoint_id = 3;   // Checkpoint UUID for this response
 }
 
 // GetSessionRequest for retrieving session details

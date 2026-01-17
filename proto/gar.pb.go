@@ -365,10 +365,9 @@ func (x *TriggerSessionRequest) GetCheckpointId() string {
 // TriggerSessionResponse contains the result of triggering a session
 type TriggerSessionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	State         State                  `protobuf:"varint,2,opt,name=state,proto3,enum=proto.State" json:"state,omitempty"` // Session state
-	Output        *Content               `protobuf:"bytes,3,opt,name=output,proto3" json:"output,omitempty"`
-	CheckpointId  string                 `protobuf:"bytes,4,opt,name=checkpoint_id,json=checkpointId,proto3" json:"checkpoint_id,omitempty"` // Checkpoint UUID for this response
+	State         State                  `protobuf:"varint,1,opt,name=state,proto3,enum=proto.State" json:"state,omitempty"` // Session state
+	Output        *Content               `protobuf:"bytes,2,opt,name=output,proto3" json:"output,omitempty"`
+	CheckpointId  string                 `protobuf:"bytes,3,opt,name=checkpoint_id,json=checkpointId,proto3" json:"checkpoint_id,omitempty"` // Checkpoint UUID for this response
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -401,13 +400,6 @@ func (x *TriggerSessionResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use TriggerSessionResponse.ProtoReflect.Descriptor instead.
 func (*TriggerSessionResponse) Descriptor() ([]byte, []int) {
 	return file_proto_gar_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *TriggerSessionResponse) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
 }
 
 func (x *TriggerSessionResponse) GetState() State {
@@ -844,13 +836,11 @@ const file_proto_gar_proto_rawDesc = "" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\x12&\n" +
 	"\x06inputs\x18\x02 \x03(\v2\x0e.proto.ContentR\x06inputs\x12#\n" +
-	"\rcheckpoint_id\x18\x03 \x01(\tR\fcheckpointId\"\xa8\x01\n" +
-	"\x16TriggerSessionResponse\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12\"\n" +
-	"\x05state\x18\x02 \x01(\x0e2\f.proto.StateR\x05state\x12&\n" +
-	"\x06output\x18\x03 \x01(\v2\x0e.proto.ContentR\x06output\x12#\n" +
-	"\rcheckpoint_id\x18\x04 \x01(\tR\fcheckpointId\"2\n" +
+	"\rcheckpoint_id\x18\x03 \x01(\tR\fcheckpointId\"\x89\x01\n" +
+	"\x16TriggerSessionResponse\x12\"\n" +
+	"\x05state\x18\x01 \x01(\x0e2\f.proto.StateR\x05state\x12&\n" +
+	"\x06output\x18\x02 \x01(\v2\x0e.proto.ContentR\x06output\x12#\n" +
+	"\rcheckpoint_id\x18\x03 \x01(\tR\fcheckpointId\"2\n" +
 	"\x11GetSessionRequest\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x01 \x01(\tR\tsessionId\"\xde\x02\n" +
