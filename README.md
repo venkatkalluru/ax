@@ -107,17 +107,17 @@ The `gar` command provides several subcommands:
 
 ```bash
 gar trigger \
+    --input <text> \
     [--session-id <id>] \
-    [--input <text>] \
     [--checkpoint <uuid>] \
     [--server <address>]
 ```
 
-Triggers a new agentic loop session or automatically resumes an existing one. If the session ID already exists, the session will be resumed from its last checkpoint (or a specific checkpoint if provided) with optional new inputs.
+Triggers a new agentic loop session or automatically resumes an existing one. If the session ID already exists, the session will be resumed from its last checkpoint (or a specific checkpoint if provided) with the new input.
 
 Options:
+- `--input`: Input message to send to agents (required)
 - `--session-id`: Unique session identifier (optional, generates UUID if not provided, or resumes if exists)
-- `--input`: Input message to send to agents
 - `--checkpoint`: Resume from specific checkpoint (empty for latest)
 - `--server`: gRPC controller server address (default: "localhost:8494")
 

@@ -31,9 +31,10 @@ Use --checkpoint to resume from a specific checkpoint.`,
 
 func init() {
 	triggerCmd.Flags().StringVar(&triggerSessionID, "session-id", "", "Session ID (optional, generates UUID if not provided)")
-	triggerCmd.Flags().StringVar(&triggerInput, "input", "", "Input message to send")
+	triggerCmd.Flags().StringVar(&triggerInput, "input", "", "Input message to send (required)")
 	triggerCmd.Flags().StringVar(&triggerCheckpoint, "checkpoint", "", "Resume from specific checkpoint UUID (empty for latest)")
 	triggerCmd.Flags().StringVar(&triggerServerAddr, "server", "localhost:8494", "gRPC controller server address (default: localhost:8494)")
+	triggerCmd.MarkFlagRequired("input")
 }
 
 func runTrigger(cmd *cobra.Command, args []string) error {
@@ -46,16 +47,13 @@ func runTrigger(cmd *cobra.Command, args []string) error {
 	fmt.Printf("Triggering session: %s\n", triggerSessionID)
 
 	// Create input content
-	var inputs []*proto.Content
-	if triggerInput != "" {
-		inputs = []*proto.Content{
-			{
-				Role:     "user",
-				Type:     "text",
-				Mimetype: "text/plain",
-				Data:     triggerInput,
-			},
-		}
+	inputs := []*proto.Content{
+		{
+			Role:     "user",
+			Type:     "text",
+			Mimetype: "text/plain",
+			Data:     triggerInput,
+		},
 	}
 
 	// Setup signal handling for graceful shutdown
