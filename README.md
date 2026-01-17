@@ -83,7 +83,6 @@ The gar server exposes the GARService on port :8494.
 ```bash
 # Register the remote agent with gar
 gar register \
-    --server localhost:8494 \
     --agent-id remote-echo-agent \
     --name "Echo Agent" \
     --description "Echoes input in uppercase" \
@@ -91,12 +90,11 @@ gar register \
 
 # Trigger a session - gar will trigger the remote agent via Process RPC
 gar trigger \
-    --server localhost:8494 \
     --session-id session123 \
     --input "Hello remote agent"
 
 # Inspect session details
-gar inspect --server localhost:8494 --session-id session123
+gar inspect --session-id session123
 ```
 
 ## Usage
@@ -109,32 +107,31 @@ The `gar` command provides several subcommands:
 
 ```bash
 gar trigger \
-    --server <address> \
     [--session-id <id>] \
     [--input <text>] \
-    [--checkpoint <uuid>]
+    [--checkpoint <uuid>] \
+    [--server <address>]
 ```
 
 Triggers a new agentic loop session or automatically resumes an existing one. If the session ID already exists, the session will be resumed from its last checkpoint (or a specific checkpoint if provided) with optional new inputs.
 
 Options:
-- `--server`: gRPC controller server address (e.g., "localhost:8494") (required)
 - `--session-id`: Unique session identifier (optional, generates UUID if not provided, or resumes if exists)
 - `--input`: Input message to send to agents
 - `--checkpoint`: Resume from specific checkpoint (empty for latest)
+- `--server`: gRPC controller server address (default: "localhost:8494")
 
 **Examples:**
 
 ```bash
 # Trigger a new session
-gar trigger --server localhost:8494 --input "Hello agent"
+gar trigger --input "Hello agent"
 
 # Resume an existing session with new input
-gar trigger --server localhost:8494 --session-id abc123 \
-    --input "Continue processing"
+gar trigger --session-id abc123 --input "Continue processing"
 
 # Resume from a specific checkpoint (useful for undoing mistakes or exploring alternatives)
-gar trigger --server localhost:8494 --session-id abc123 \
+gar trigger --session-id abc123 \
     --checkpoint "550e8400-e29b-41d4-a716-446655440000" \
     --input "Try a different approach"
 ```
@@ -142,7 +139,7 @@ gar trigger --server localhost:8494 --session-id abc123 \
 #### Inspect a Session
 
 ```bash
-gar inspect --server <address> --session-id <id>
+gar inspect --session-id <id> [--server <address>]
 ```
 
 Displays session details including:
@@ -152,24 +149,24 @@ Displays session details including:
 - Active agents
 
 Options:
-- `--server`: gRPC controller server address (e.g., "localhost:8494") (required)
 - `--session-id`: Session identifier to inspect (required)
+- `--server`: gRPC controller server address (default: "localhost:8494")
 
 #### Register a Remote Agent
 
 ```bash
 gar register \
-    --server <address> \
     --agent-id <id> \
     --agent-addr <address> \
+    [--server <address>] \
     [--name <name>] \
     [--description <desc>]
 ```
 
 Options:
-- `--server`: gRPC controller server address (e.g., "localhost:8494") (required)
 - `--agent-id`: Unique agent identifier (required)
 - `--agent-addr`: gRPC agent server address (e.g., "localhost:50051") (required)
+- `--server`: gRPC controller server address (default: "localhost:8494")
 - `--name`: Human-readable name for the agent
 - `--description`: Description of agent capabilities
 
@@ -183,12 +180,6 @@ Starts the controller as a gRPC server using a YAML configuration file.
 
 Options:
 - `--config`: Path to YAML configuration file (default: "gar.yaml")
-
-The configuration file specifies:
-- Server address and port
-- Event log directory
-- Controller settings (max steps, health check interval)
-- Gemini planner settings (optional)
 
 Example configuration file (`gar.yaml`):
 ```yaml
@@ -221,10 +212,10 @@ Checkpoints provide a mechanism to save and resume session state at specific poi
 
 ```bash
 # Inspect a session to see available checkpoints
-gar inspect --server localhost:8494 --session-id session123
+gar inspect --session-id session123
 
 # Resume from a specific checkpoint
-gar trigger --server localhost:8494 --session-id session123 \
+gar trigger --session-id session123 \
   --checkpoint "550e8400-e29b-41d4-a716-446655440000" \
   --input "Try different approach"
 ```
@@ -351,7 +342,7 @@ func (s *server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest)
 **Workflow:**
 1. Remote agent starts as gRPC server on a port (e.g., :50051)
 2. Start gar controller: `gar serve`
-3. Register with gar: `gar register --server localhost:8494 --agent-id my-agent --name "My Agent" --description "Agent description" --agent-addr localhost:50051`
+3. Register with gar: `gar register --agent-id my-agent --name "My Agent" --description "Agent description" --agent-addr localhost:50051`
 4. When gar triggers a session, it calls the agent's `Process` RPC
 5. GAR streams input content → Agent processes → Agent streams output back
 
@@ -405,7 +396,6 @@ python agent.py
 
 # Register with gar (in another terminal)
 gar register \
-  --server localhost:8494 \
   --agent-id python-agent \
   --name "Python Agent" \
   --description "Python-based agent" \
@@ -413,7 +403,6 @@ gar register \
 
 # Trigger a session
 gar trigger \
-  --server localhost:8494 \
   --session-id session123 \
   --input "Hello Python agent"
 ```

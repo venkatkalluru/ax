@@ -25,9 +25,8 @@ var inspectCmd = &cobra.Command{
 
 func init() {
 	inspectCmd.Flags().StringVar(&inspectSessionID, "session-id", "", "Session ID (required)")
-	inspectCmd.Flags().StringVar(&inspectServerAddr, "server", "", "gRPC controller server address (e.g., localhost:8494)")
+	inspectCmd.Flags().StringVar(&inspectServerAddr, "server", "localhost:8494", "gRPC controller server address (default: localhost:8494)")
 	inspectCmd.MarkFlagRequired("session-id")
-	inspectCmd.MarkFlagRequired("server")
 }
 
 func runInspect(cmd *cobra.Command, args []string) error {

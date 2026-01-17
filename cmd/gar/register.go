@@ -30,10 +30,9 @@ func init() {
 	registerCmd.Flags().StringVar(&registerAgentName, "name", "", "Agent name")
 	registerCmd.Flags().StringVar(&registerAgentDesc, "description", "", "Agent description")
 	registerCmd.Flags().StringVar(&registerAgentAddr, "agent-addr", "", "Agent address (e.g., localhost:50051)")
-	registerCmd.Flags().StringVar(&registerServerAddr, "server", "", "gRPC controller server address (e.g., localhost:8494)")
+	registerCmd.Flags().StringVar(&registerServerAddr, "server", "localhost:8494", "gRPC controller server address (default: localhost:8494)")
 	registerCmd.MarkFlagRequired("agent-id")
 	registerCmd.MarkFlagRequired("agent-addr")
-	registerCmd.MarkFlagRequired("server")
 }
 
 func runRegister(cmd *cobra.Command, args []string) error {

@@ -35,8 +35,7 @@ func init() {
 	triggerCmd.Flags().StringVar(&triggerSessionID, "session-id", "", "Session ID (optional, generates UUID if not provided)")
 	triggerCmd.Flags().StringVar(&triggerInput, "input", "", "Input message to send")
 	triggerCmd.Flags().StringVar(&triggerCheckpoint, "checkpoint", "", "Resume from specific checkpoint UUID (empty for latest)")
-	triggerCmd.Flags().StringVar(&triggerServerAddr, "server", "", "gRPC controller server address (e.g., localhost:8494)")
-	triggerCmd.MarkFlagRequired("server")
+	triggerCmd.Flags().StringVar(&triggerServerAddr, "server", "localhost:8494", "gRPC controller server address (default: localhost:8494)")
 }
 
 func runTrigger(cmd *cobra.Command, args []string) error {
