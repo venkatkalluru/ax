@@ -75,9 +75,6 @@ func (s *server) StreamLifecycle(stream proto.AgentService_StreamLifecycleServer
 	if err := stream.Send(&proto.LifecycleEvent{
 		EventType: "PROGRESS",
 		Timestamp: timestamppb.Now(),
-		Metadata: map[string]string{
-			"status": "started",
-		},
 	}); err != nil {
 		return err
 	}
@@ -92,9 +89,6 @@ func (s *server) StreamLifecycle(stream proto.AgentService_StreamLifecycleServer
 			event := &proto.LifecycleEvent{
 				EventType: "PROGRESS",
 				Timestamp: timestamppb.Now(),
-				Metadata: map[string]string{
-					"status": "healthy",
-				},
 			}
 
 			if err := stream.Send(event); err != nil {

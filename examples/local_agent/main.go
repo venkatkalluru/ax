@@ -101,9 +101,6 @@ func createEchoAgent(id string) (*agent.LocalAgent, error) {
 		if err := handler(&proto.LifecycleEvent{
 			EventType: "PROGRESS",
 			Timestamp: timestamppb.Now(),
-			Metadata: map[string]string{
-				"status": "started",
-			},
 		}); err != nil {
 			return err
 		}
@@ -118,9 +115,6 @@ func createEchoAgent(id string) (*agent.LocalAgent, error) {
 				if err := handler(&proto.LifecycleEvent{
 					EventType: "PROGRESS",
 					Timestamp: timestamppb.Now(),
-					Metadata: map[string]string{
-						"status": "processing",
-					},
 				}); err != nil {
 					return err
 				}
