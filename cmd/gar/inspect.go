@@ -28,6 +28,7 @@ func init() {
 }
 
 func runInspect(cmd *cobra.Command, args []string) error {
+	ctx := context.Background()
 	fmt.Printf("Inspecting session: %s\n", inspectSessionID)
 
 	conn, err := connect(inspectServerAddr)
@@ -39,7 +40,7 @@ func runInspect(cmd *cobra.Command, args []string) error {
 	client := proto.NewGARServiceClient(conn)
 
 	// Get session details
-	resp, err := client.GetSession(context.Background(), &proto.GetSessionRequest{
+	resp, err := client.GetSession(ctx, &proto.GetSessionRequest{
 		SessionId: inspectSessionID,
 	})
 	if err != nil {

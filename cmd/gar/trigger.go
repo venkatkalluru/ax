@@ -38,6 +38,8 @@ func init() {
 }
 
 func runTrigger(cmd *cobra.Command, args []string) error {
+	ctx := context.Background()
+
 	// Generate UUID if no session ID provided
 	if triggerSessionID == "" {
 		triggerSessionID = uuid.New().String()
@@ -57,7 +59,7 @@ func runTrigger(cmd *cobra.Command, args []string) error {
 	}
 
 	// Setup signal handling for graceful shutdown
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	sigChan := make(chan os.Signal, 1)

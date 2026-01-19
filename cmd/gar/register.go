@@ -36,6 +36,8 @@ func init() {
 }
 
 func runRegister(cmd *cobra.Command, args []string) error {
+	ctx := context.Background()
+
 	fmt.Printf("Registering agent: %s at %s\n", registerAgentID, registerAgentAddr)
 	fmt.Printf("  Name: %s\n", registerAgentName)
 	fmt.Printf("  Description: %s\n", registerAgentDesc)
@@ -49,7 +51,7 @@ func runRegister(cmd *cobra.Command, args []string) error {
 	client := proto.NewGARServiceClient(conn)
 
 	// Register remote agent
-	_, err = client.RegisterAgent(context.Background(), &proto.RegisterAgentRequest{
+	_, err = client.RegisterAgent(ctx, &proto.RegisterAgentRequest{
 		AgentId:     registerAgentID,
 		Name:        registerAgentName,
 		Description: registerAgentDesc,
