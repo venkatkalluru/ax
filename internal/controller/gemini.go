@@ -26,7 +26,7 @@ type GeminiPlannerConfig struct {
 // NewGeminiPlanFunc creates a planning function that uses Gemini for intelligent agent selection.
 // It converts available agents into function declarations and lets Gemini decide which agent
 // to invoke based on the session context and agent capabilities.
-func NewGeminiPlanFunc(registry *Registry, config GeminiPlannerConfig) (PlanFunc, error) {
+func NewGeminiPlanFunc(ctx context.Context, registry *Registry, config GeminiPlannerConfig) (PlanFunc, error) {
 	// Set defaults
 	if config.Model == "" {
 		config.Model = "gemini-2.0-flash-exp"
@@ -73,7 +73,6 @@ Guidelines:
 	}
 
 	// Create Gemini client
-	ctx := context.Background()
 	client, err := genai.NewClient(ctx, option.WithAPIKey(config.APIKey))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Gemini client: %w", err)

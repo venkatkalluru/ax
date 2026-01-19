@@ -57,7 +57,7 @@ func (s *Server) TriggerSession(req *proto.TriggerSessionRequest, stream grpc.Se
 	}
 
 	// Get session state
-	session, err := s.controller.GetSession(sessionID)
+	session, err := s.controller.GetSession(stream.Context(), sessionID)
 	if err != nil {
 		stream.Send(&proto.TriggerSessionResponse{
 			State: proto.State_STATE_FAILED,
@@ -88,10 +88,10 @@ func (s *Server) GetSession(ctx context.Context, req *proto.GetSessionRequest) (
 	}
 
 	// Load session if not already loaded
-	session, err := s.controller.GetSession(req.SessionId)
+	session, err := s.controller.GetSession(ctx, req.SessionId)
 	if err != nil {
 		// Try loading from event log
-		session, err = s.controller.LoadSession(req.SessionId)
+		session, err = s.controller.LoadSession(ctx, req.SessionId)
 		if err != nil {
 			return nil, fmt.Errorf("session not found: %w", err)
 		}

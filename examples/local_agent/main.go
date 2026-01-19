@@ -25,7 +25,7 @@ func main() {
 		log.Fatalf("Error creating agent: %v\n", err)
 	}
 
-	c, err := controller.New(controller.Config{
+	c, err := controller.New(ctx, controller.Config{
 		EventLogFactory: func(sessionID string) (eventlog.EventLog, error) {
 			return eventlog.NewFileEventLog(eventlog.FileConfig{
 				SessionID: sessionID,

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -30,6 +31,8 @@ func init() {
 }
 
 func runServe(cmd *cobra.Command, args []string) error {
+	ctx := context.Background()
+
 	// Load configuration from YAML file
 	cfg, err := config.LoadFromFile(serveConfigFile)
 	if err != nil {
@@ -47,7 +50,7 @@ func runServe(cmd *cobra.Command, args []string) error {
 	fmt.Printf("Health check interval: %s\n", cfg.Controller.HealthCheckInterval)
 
 	// Create controller with config
-	c, err := newControllerFromConfig(cfg)
+	c, err := newControllerFromConfig(ctx, cfg)
 	if err != nil {
 		return fmt.Errorf("error creating controller: %w", err)
 	}
@@ -74,7 +77,7 @@ func runServe(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func newControllerFromConfig(cfg *config.Config) (*controller.Controller, error) {
+func newControllerFromConfig(ctx context.Context, cfg *config.Config) (*controller.Controller, error) {
 	// Create event log factory
 	eventLogFactory := func(sessionID string) (eventlog.EventLog, error) {
 		return eventlog.NewFileEventLog(eventlog.FileConfig{
@@ -93,7 +96,7 @@ func newControllerFromConfig(cfg *config.Config) (*controller.Controller, error)
 	}
 
 	// Create controller
-	c, err := controller.New(controllerConfig)
+	c, err := controller.New(ctx, controllerConfig)
 	if err != nil {
 		return nil, err
 	}

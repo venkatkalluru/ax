@@ -30,7 +30,7 @@ type Config struct {
 }
 
 // New creates a new controller instance.
-func New(config Config) (*Controller, error) {
+func New(ctx context.Context, config Config) (*Controller, error) {
 	if config.MaxSteps == 0 {
 		config.MaxSteps = 100
 	}
@@ -45,7 +45,7 @@ func New(config Config) (*Controller, error) {
 	registry := NewRegistry(config.HealthCheckInterval)
 
 	// Initialize loop executor
-	loopExecutor, err := NewLoopExecutor(LoopConfig{
+	loopExecutor, err := NewLoopExecutor(ctx, LoopConfig{
 		Registry:       registry,
 		SessionManager: sessionManager,
 		MaxSteps:       config.MaxSteps,
@@ -115,17 +115,17 @@ func (d *Controller) TriggerSession(ctx context.Context, sessionID string, input
 }
 
 // GetSession retrieves a session by ID.
-func (d *Controller) GetSession(sessionID string) (*Session, error) {
+func (d *Controller) GetSession(ctx context.Context, sessionID string) (*Session, error) {
 	return d.sessionManager.GetSession(sessionID)
 }
 
 // LoadSession loads a session from event log.
-func (d *Controller) LoadSession(sessionID string) (*Session, error) {
+func (d *Controller) LoadSession(ctx context.Context, sessionID string) (*Session, error) {
 	return d.sessionManager.LoadSession(sessionID)
 }
 
 // CloseSession closes a session.
-func (d *Controller) CloseSession(sessionID string) error {
+func (d *Controller) CloseSession(ctx context.Context, sessionID string) error {
 	return d.sessionManager.CloseSession(sessionID)
 }
 

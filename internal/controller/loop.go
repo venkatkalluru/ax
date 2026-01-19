@@ -44,7 +44,7 @@ type LoopConfig struct {
 }
 
 // NewLoopExecutor creates a new loop executor.
-func NewLoopExecutor(config LoopConfig) (*LoopExecutor, error) {
+func NewLoopExecutor(ctx context.Context, config LoopConfig) (*LoopExecutor, error) {
 	if config.Registry == nil {
 		return nil, fmt.Errorf("registry cannot be nil")
 	}
@@ -58,7 +58,7 @@ func NewLoopExecutor(config LoopConfig) (*LoopExecutor, error) {
 	// Provide default plan function if not specified
 	if config.PlanFunc == nil {
 		// Use Gemini planner by default
-		geminiPlanFunc, err := NewGeminiPlanFunc(config.Registry, GeminiPlannerConfig{})
+		geminiPlanFunc, err := NewGeminiPlanFunc(ctx, config.Registry, GeminiPlannerConfig{})
 		if err != nil {
 			return nil, fmt.Errorf("failed to initialize default Gemini planner: %w (set GEMINI_API_KEY env var or provide custom PlanFunc)", err)
 		}
