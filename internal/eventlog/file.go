@@ -21,6 +21,7 @@ type FileEventLog struct {
 	filePath  string
 	file      *os.File
 	writer    *bufio.Writer
+	sequence  int64 // Monotonic sequence counter
 }
 
 // FileConfig configures a FileEventLog instance.
@@ -52,11 +53,32 @@ func NewFileEventLog(config FileConfig) (*FileEventLog, error) {
 		return nil, fmt.Errorf("failed to open event log file: %w", err)
 	}
 
+	// Read existing entries to determine the current sequence number
+	var sequence int64
+	if fileInfo, err := os.Stat(filePath); err == nil && fileInfo.Size() > 0 {
+		readFile, err := os.Open(filePath)
+		if err != nil {
+			file.Close()
+			return nil, fmt.Errorf("failed to read existing log for sequence: %w", err)
+		}
+		scanner := bufio.NewScanner(readFile)
+		for scanner.Scan() {
+			var entry Entry
+			if err := json.Unmarshal(scanner.Bytes(), &entry); err == nil {
+				if entry.Sequence > sequence {
+					sequence = entry.Sequence
+				}
+			}
+		}
+		readFile.Close()
+	}
+
 	return &FileEventLog{
 		sessionID: config.SessionID,
 		filePath:  filePath,
 		file:      file,
 		writer:    bufio.NewWriter(file),
+		sequence:  sequence,
 	}, nil
 }
 
@@ -76,10 +98,14 @@ func (e *FileEventLog) Append(entryType EventType, checkpointID string, data map
 	entry := Entry{
 		SessionID:    e.sessionID,
 		Timestamp:    time.Now(),
+		Sequence:     e.sequence,
 		Type:         entryType,
 		CheckpointID: checkpointID,
 		Data:         data,
 	}
+
+	// Increment sequence for next entry
+	e.sequence++
 
 	jsonData, err := json.Marshal(entry)
 	if err != nil {
@@ -165,6 +191,7 @@ func (e *FileEventLog) RetrieveEntries(ctx context.Context) ([]Entry, error) {
 	scanner := bufio.NewScanner(readFile)
 
 	lineNum := 0
+	var expectedSequence int64 = 0
 	for scanner.Scan() {
 		lineNum++
 		line := scanner.Bytes()
@@ -173,6 +200,12 @@ func (e *FileEventLog) RetrieveEntries(ctx context.Context) ([]Entry, error) {
 		if err := json.Unmarshal(line, &entry); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal entry at line %d: %w", lineNum, err)
 		}
+
+		// Validate sequence number
+		if entry.Sequence != expectedSequence {
+			return nil, fmt.Errorf("sequence number mismatch at line %d: expected %d, got %d", lineNum, expectedSequence, entry.Sequence)
+		}
+		expectedSequence++
 
 		entries = append(entries, entry)
 	}

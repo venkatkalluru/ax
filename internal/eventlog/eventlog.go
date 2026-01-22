@@ -22,6 +22,7 @@ const (
 type Entry struct {
 	SessionID    string                 `json:"session_id"`
 	Timestamp    time.Time              `json:"timestamp"`
+	Sequence     int64                  `json:"seq"`                     // Monotonic sequence number
 	Type         EventType              `json:"type"`
 	CheckpointID string                 `json:"checkpoint_id,omitempty"` // UUID for checkpoint tracking
 	Data         map[string]interface{} `json:"data"`
