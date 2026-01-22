@@ -29,8 +29,6 @@ func init() {
 
 func runInspect(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
-	fmt.Printf("Inspecting session: %s\n", inspectSessionID)
-
 	conn, err := connect(inspectServerAddr)
 	if err != nil {
 		return err

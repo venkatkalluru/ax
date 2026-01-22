@@ -46,8 +46,6 @@ func runTrigger(cmd *cobra.Command, args []string) error {
 		fmt.Printf("Generated session ID: %s\n", triggerSessionID)
 	}
 
-	fmt.Printf("Triggering session: %s\n", triggerSessionID)
-
 	// Create input content
 	inputs := []*proto.Content{
 		{

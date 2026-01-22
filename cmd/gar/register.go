@@ -37,11 +37,6 @@ func init() {
 
 func runRegister(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
-
-	fmt.Printf("Registering agent: %s at %s\n", registerAgentID, registerAgentAddr)
-	fmt.Printf("  Name: %s\n", registerAgentName)
-	fmt.Printf("  Description: %s\n", registerAgentDesc)
-
 	conn, err := connect(inspectServerAddr)
 	if err != nil {
 		return err
@@ -60,7 +55,5 @@ func runRegister(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("error registering agent: %w", err)
 	}
-
-	fmt.Println("Agent registered successfully")
 	return nil
 }
