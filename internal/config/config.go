@@ -93,8 +93,6 @@ func (c *Config) setDefaults() {
 	if c.HealthCheckInterval == 0 {
 		c.HealthCheckInterval = 30 * time.Second
 	}
-
-	// Gemini planner defaults are handled in the controller package
 }
 
 // Validate validates the configuration.
