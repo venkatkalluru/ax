@@ -197,7 +197,6 @@ remote_agents:
     address: "localhost:50051"
     metadata:
       version: "1.0"
-      language: "python"
 ```
 
 Example:
