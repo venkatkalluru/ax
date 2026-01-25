@@ -11,9 +11,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// TODO(jbd): Make Session an interface and make it easier
-// to bring different session implementations.
-
 // Session represents an agentic loop execution session.
 // It maintains in-memory state and uses event log for durability.
 type Session struct {
