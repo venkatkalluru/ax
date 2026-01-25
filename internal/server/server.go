@@ -49,17 +49,11 @@ func (s *Server) TriggerSession(req *proto.TriggerSessionRequest, stream grpc.Se
 		return err
 	}
 
-	// Trigger the session
-	if err := s.controller.TriggerSession(stream.Context(), sessionID, inputs, checkpointID); err != nil {
-		stream.Send(&proto.TriggerSessionResponse{
-			State:     proto.State_STATE_FAILED,
-			SessionId: sessionID,
-		})
-		return err
-	}
-
 	// TODO(jbd): Return outputs.
-	return nil
+	if checkpointID == "" {
+		return s.controller.TriggerSession(stream.Context(), sessionID, inputs)
+	}
+	return s.controller.TriggerForkedSession(stream.Context(), sessionID, checkpointID, inputs)
 }
 
 // GetSession retrieves session details.

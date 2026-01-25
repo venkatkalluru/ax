@@ -62,7 +62,7 @@ func main() {
 
 	// Trigger a session
 	sessionID := uuid.New().String()
-	if err := c.TriggerSession(ctx, sessionID, inputs, ""); err != nil {
+	if err := c.TriggerSession(ctx, sessionID, inputs); err != nil {
 		log.Fatalf("Error triggering session: %v\n", err)
 	}
 }

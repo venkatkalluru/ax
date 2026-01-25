@@ -66,51 +66,45 @@ func New(ctx context.Context, config Config) (*Controller, error) {
 // If sessionID is empty, a UUID will be generated.
 // If the session already exists, it will be resumed with optional new inputs.
 // If checkpointID is provided, resumes from that specific checkpoint instead of the latest.
-func (d *Controller) TriggerSession(ctx context.Context, sessionID string, inputs []*proto.Content, checkpointID string) error {
+func (d *Controller) TriggerSession(ctx context.Context, sessionID string, inputs []*proto.Content) error {
 	// Generate UUID if no session ID provided
 	if sessionID == "" {
 		return fmt.Errorf("session_id is required")
 	}
 
 	// Check if session already exists
-	existingSession, err := d.sessionManager.GetSession(sessionID)
-	if err == nil && existingSession != nil {
-		// Session exists - resume it from checkpoint
-		// If checkpoint ID specified, reload from that checkpoint
-		if checkpointID != "" {
-			existingSession, err = d.sessionManager.LoadSessionFromCheckpoint(sessionID, checkpointID)
-			if err != nil {
-				return fmt.Errorf("failed to load from checkpoint: %w", err)
-			}
+	sess, err := d.sessionManager.GetSession(sessionID)
+	if err == nil && sess == nil {
+		// Session doesn't exist - create new session
+		// Checkpoint ID is ignored for new sessions
+		sess, err = d.sessionManager.NewSession(sessionID)
+		if err != nil {
+			return fmt.Errorf("failed to create session: %w", err)
 		}
-
-		// Add new inputs to the session if provided
-		for _, content := range inputs {
-			if _, err := existingSession.WriteContentIn(ctx, content); err != nil {
-				return fmt.Errorf("failed to write input content: %w", err)
-			}
-		}
-
-		// Resume the loop
-		if err := d.loopExecutor.Resume(ctx, sessionID); err != nil {
-			return fmt.Errorf("resume failed: %w", err)
-		}
-		return nil
 	}
 
-	// Session doesn't exist - create new session
-	// Checkpoint ID is ignored for new sessions
-	session, err := d.sessionManager.NewSession(sessionID)
-	if err != nil {
-		return fmt.Errorf("failed to create session: %w", err)
+	for _, content := range inputs {
+		if _, err := sess.WriteContentIn(ctx, content); err != nil {
+			return fmt.Errorf("failed to write input content: %w", err)
+		}
 	}
 
-	// Execute the loop
-	if err := d.loopExecutor.Execute(ctx, session.ID, inputs); err != nil {
+	if err := d.loopExecutor.Execute(ctx, sess.ID, inputs); err != nil {
 		return fmt.Errorf("execution failed: %w", err)
 	}
-
 	return nil
+}
+
+func (d *Controller) TriggerForkedSession(ctx context.Context, sessionID string, checkpointID string, inputs []*proto.Content) error {
+	if sessionID == "" {
+		return fmt.Errorf("session_id is required")
+	}
+	if checkpointID == "" {
+		return fmt.Errorf("checkpoint_id is required")
+	}
+	// TODO(jbd): Fork a new session by copying all content to
+	// the provided checkpoint ID, and execute the loop executor.
+	panic("not yet implemented")
 }
 
 // LoadSession loads a session from event log.
