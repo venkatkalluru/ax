@@ -19,9 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AgentService_Process_FullMethodName         = "/proto.AgentService/Process"
-	AgentService_StreamLifecycle_FullMethodName = "/proto.AgentService/StreamLifecycle"
-	AgentService_HealthCheck_FullMethodName     = "/proto.AgentService/HealthCheck"
+	AgentService_Process_FullMethodName     = "/proto.AgentService/Process"
+	AgentService_HealthCheck_FullMethodName = "/proto.AgentService/HealthCheck"
 )
 
 // AgentServiceClient is the client API for AgentService service.
@@ -32,8 +31,6 @@ const (
 type AgentServiceClient interface {
 	// Process handles bidirectional streaming of content between dispatcher and agent
 	Process(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[Content, Content], error)
-	// StreamLifecycle allows agents to stream lifecycle events to dispatcher
-	StreamLifecycle(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[LifecycleEvent, LifecycleEvent], error)
 	// HealthCheck checks if the agent is healthy and responsive
 	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
 }
@@ -59,19 +56,6 @@ func (c *agentServiceClient) Process(ctx context.Context, opts ...grpc.CallOptio
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type AgentService_ProcessClient = grpc.BidiStreamingClient[Content, Content]
 
-func (c *agentServiceClient) StreamLifecycle(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[LifecycleEvent, LifecycleEvent], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &AgentService_ServiceDesc.Streams[1], AgentService_StreamLifecycle_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[LifecycleEvent, LifecycleEvent]{ClientStream: stream}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type AgentService_StreamLifecycleClient = grpc.BidiStreamingClient[LifecycleEvent, LifecycleEvent]
-
 func (c *agentServiceClient) HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HealthCheckResponse)
@@ -90,8 +74,6 @@ func (c *agentServiceClient) HealthCheck(ctx context.Context, in *HealthCheckReq
 type AgentServiceServer interface {
 	// Process handles bidirectional streaming of content between dispatcher and agent
 	Process(grpc.BidiStreamingServer[Content, Content]) error
-	// StreamLifecycle allows agents to stream lifecycle events to dispatcher
-	StreamLifecycle(grpc.BidiStreamingServer[LifecycleEvent, LifecycleEvent]) error
 	// HealthCheck checks if the agent is healthy and responsive
 	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)
 	mustEmbedUnimplementedAgentServiceServer()
@@ -106,9 +88,6 @@ type UnimplementedAgentServiceServer struct{}
 
 func (UnimplementedAgentServiceServer) Process(grpc.BidiStreamingServer[Content, Content]) error {
 	return status.Error(codes.Unimplemented, "method Process not implemented")
-}
-func (UnimplementedAgentServiceServer) StreamLifecycle(grpc.BidiStreamingServer[LifecycleEvent, LifecycleEvent]) error {
-	return status.Error(codes.Unimplemented, "method StreamLifecycle not implemented")
 }
 func (UnimplementedAgentServiceServer) HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method HealthCheck not implemented")
@@ -140,13 +119,6 @@ func _AgentService_Process_Handler(srv interface{}, stream grpc.ServerStream) er
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type AgentService_ProcessServer = grpc.BidiStreamingServer[Content, Content]
-
-func _AgentService_StreamLifecycle_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(AgentServiceServer).StreamLifecycle(&grpc.GenericServerStream[LifecycleEvent, LifecycleEvent]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type AgentService_StreamLifecycleServer = grpc.BidiStreamingServer[LifecycleEvent, LifecycleEvent]
 
 func _AgentService_HealthCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HealthCheckRequest)
@@ -182,12 +154,6 @@ var AgentService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "Process",
 			Handler:       _AgentService_Process_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
-		},
-		{
-			StreamName:    "StreamLifecycle",
-			Handler:       _AgentService_StreamLifecycle_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},

@@ -133,38 +133,6 @@ func (a *RemoteAgent) Process(ctx context.Context, sessionID string, inputs []*p
 	}
 }
 
-// StreamLifecycle streams lifecycle events from the remote agent.
-func (a *RemoteAgent) StreamLifecycle(ctx context.Context, handler LifecycleHandler) error {
-	stream, err := a.client.StreamLifecycle(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to create lifecycle stream: %w", err)
-	}
-
-	// Receive lifecycle events and call handler for each
-	for {
-		event, err := stream.Recv()
-		if err == io.EOF {
-			// Stream completed successfully
-			return nil
-		}
-		if err != nil {
-			return fmt.Errorf("failed to receive lifecycle event: %w", err)
-		}
-
-		// Call the handler with the received event
-		if err := handler(event); err != nil {
-			return fmt.Errorf("handler error: %w", err)
-		}
-
-		// Check for context cancellation
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		default:
-		}
-	}
-}
-
 // HealthCheck checks if the remote agent is healthy.
 func (a *RemoteAgent) HealthCheck(ctx context.Context) error {
 	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)

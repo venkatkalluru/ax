@@ -7,8 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"google.golang.org/protobuf/types/known/timestamppb"
-
 	"github.com/google/gar/agent"
 	"github.com/google/gar/internal/controller"
 	"github.com/google/gar/internal/eventlog"
@@ -100,34 +98,6 @@ func createEchoAgent(id string) (*agent.LocalAgent, error) {
 		return nil
 	}
 
-	lifecycleFunc := func(ctx context.Context, handler agent.LifecycleHandler) error {
-		// Send initial heartbeat event
-		if err := handler(&proto.LifecycleEvent{
-			EventType: proto.EventType_EVENT_TYPE_HEARTBEAT,
-			Timestamp: timestamppb.Now(),
-		}); err != nil {
-			return err
-		}
-
-		// Send periodic heartbeats
-		ticker := time.NewTicker(5 * time.Second)
-		defer ticker.Stop()
-
-		for {
-			select {
-			case <-ticker.C:
-				if err := handler(&proto.LifecycleEvent{
-					EventType: proto.EventType_EVENT_TYPE_HEARTBEAT,
-					Timestamp: timestamppb.Now(),
-				}); err != nil {
-					return err
-				}
-			case <-ctx.Done():
-				return ctx.Err()
-			}
-		}
-	}
-
 	healthCheckFunc := func(ctx context.Context) error {
 		// Always healthy
 		return nil
@@ -136,7 +106,6 @@ func createEchoAgent(id string) (*agent.LocalAgent, error) {
 	return agent.NewLocalAgent(agent.LocalAgentConfig{
 		ID:              id,
 		ProcessFunc:     processFunc,
-		LifecycleFunc:   lifecycleFunc,
 		HealthCheckFunc: healthCheckFunc,
 	})
 }

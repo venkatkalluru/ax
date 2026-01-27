@@ -7,10 +7,8 @@ import (
 	"log"
 	"net"
 	"strings"
-	"time"
 
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/google/gar/proto"
 )
@@ -64,36 +62,6 @@ func (s *server) Process(stream proto.AgentService_ProcessServer) error {
 		}
 
 		log.Printf("Sent to dispatcher: %s", response.Data)
-	}
-}
-
-// StreamLifecycle streams lifecycle events from the agent.
-func (s *server) StreamLifecycle(stream proto.AgentService_StreamLifecycleServer) error {
-	log.Println("Lifecycle stream started")
-
-	// Send periodic heartbeats
-	ticker := time.NewTicker(10 * time.Second)
-	defer ticker.Stop()
-
-	for {
-		select {
-		case <-ticker.C:
-			event := &proto.LifecycleEvent{
-				EventType: proto.EventType_EVENT_TYPE_HEARTBEAT,
-				Timestamp: timestamppb.Now(),
-			}
-
-			if err := stream.Send(event); err != nil {
-				log.Printf("Error sending lifecycle event: %v", err)
-				return err
-			}
-
-			log.Println("Sent lifecycle event")
-
-		case <-stream.Context().Done():
-			log.Println("Lifecycle stream closed")
-			return nil
-		}
 	}
 }
 

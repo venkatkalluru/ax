@@ -195,29 +195,10 @@ func (e *LoopExecutor) executeTask(ctx context.Context, session *Session, ag age
 		return nil
 	}
 
-	// Start lifecycle event monitoring in background
-	lifecycleCtx, cancelLifecycle := context.WithCancel(ctx)
-	defer cancelLifecycle()
-
-	lifecycleHandler := func(event *proto.LifecycleEvent) error {
-		// TODO(jbd): Handle lifecycle events.
-		return nil
-	}
-
-	// Start lifecycle monitoring in background goroutine
-	lifecycleErr := make(chan error, 1)
-	go func() {
-		lifecycleErr <- ag.StreamLifecycle(lifecycleCtx, lifecycleHandler)
-	}()
-
 	// Process inputs with the agent
 	if err := ag.Process(ctx, session.ID, task.Input, outputHandler); err != nil {
-		cancelLifecycle()
 		return nil, fmt.Errorf("agent process failed: %w", err)
 	}
-
-	// Cancel lifecycle monitoring
-	cancelLifecycle()
 
 	return output, nil
 }

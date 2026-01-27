@@ -14,17 +14,16 @@ import (
 // Session represents an agentic loop execution session.
 // It maintains in-memory state and uses event log for durability.
 type Session struct {
-	ID              string
-	State           proto.State
-	CurrentStep     int
-	ActiveAgents    []string
-	MessageHistory  []*proto.Content
-	LifecycleEvents []*proto.LifecycleEvent
-	CheckpointIDs   []string // Ordered list of checkpoint UUIDs
-	CreatedAt       time.Time
-	UpdatedAt       time.Time
-	mu              sync.RWMutex
-	eventLog        eventlog.EventLog
+	ID             string
+	State          proto.State
+	CurrentStep    int
+	ActiveAgents   []string
+	MessageHistory []*proto.Content
+	CheckpointIDs  []string // Ordered list of checkpoint UUIDs
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	mu             sync.RWMutex
+	eventLog       eventlog.EventLog
 }
 
 // EventLogFactory is a function that creates EventLog instances for sessions.
@@ -63,16 +62,15 @@ func (sm *SessionManager) NewSession(sessionID string) (*Session, error) {
 
 	now := time.Now()
 	session := &Session{
-		ID:              sessionID,
-		State:           proto.State_STATE_RUNNING,
-		CurrentStep:     0,
-		ActiveAgents:    []string{},
-		MessageHistory:  []*proto.Content{},
-		LifecycleEvents: []*proto.LifecycleEvent{},
-		CheckpointIDs:   []string{},
-		CreatedAt:       now,
-		UpdatedAt:       now,
-		eventLog:        el,
+		ID:             sessionID,
+		State:          proto.State_STATE_RUNNING,
+		CurrentStep:    0,
+		ActiveAgents:   []string{},
+		MessageHistory: []*proto.Content{},
+		CheckpointIDs:  []string{},
+		CreatedAt:      now,
+		UpdatedAt:      now,
+		eventLog:       el,
 	}
 
 	sm.sessions[sessionID] = session
@@ -109,15 +107,14 @@ func (sm *SessionManager) LoadSessionFromCheckpoint(sessionID string, checkpoint
 
 	// Reconstruct session state from event log
 	session := &Session{
-		ID:              sessionID,
-		State:           proto.State_STATE_RUNNING,
-		CurrentStep:     0,
-		ActiveAgents:    []string{},
-		MessageHistory:  []*proto.Content{},
-		LifecycleEvents: []*proto.LifecycleEvent{},
-		CheckpointIDs:   []string{},
-		CreatedAt:       time.Now(),
-		UpdatedAt:       time.Now(),
+		ID:             sessionID,
+		State:          proto.State_STATE_RUNNING,
+		CurrentStep:    0,
+		ActiveAgents:   []string{},
+		MessageHistory: []*proto.Content{},
+		CheckpointIDs:  []string{},
+		CreatedAt:      time.Now(),
+		UpdatedAt:      time.Now(),
 	}
 
 	targetReached := false
@@ -150,10 +147,6 @@ func (sm *SessionManager) LoadSessionFromCheckpoint(sessionID string, checkpoint
 					checkpointFound = true
 				}
 			}
-
-		case eventlog.EventTypeLifecycle:
-			// Lifecycle events are no longer persisted to event log
-			// Skip this entry type
 		}
 
 		session.UpdatedAt = entry.Timestamp

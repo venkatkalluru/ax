@@ -22,53 +22,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// EventType represents the type of lifecycle event
-type EventType int32
-
-const (
-	EventType_EVENT_TYPE_UNSPECIFIED EventType = 0 // Unspecified event type
-	EventType_EVENT_TYPE_HEARTBEAT   EventType = 1 // Heartbeat signal
-)
-
-// Enum value maps for EventType.
-var (
-	EventType_name = map[int32]string{
-		0: "EVENT_TYPE_UNSPECIFIED",
-		1: "EVENT_TYPE_HEARTBEAT",
-	}
-	EventType_value = map[string]int32{
-		"EVENT_TYPE_UNSPECIFIED": 0,
-		"EVENT_TYPE_HEARTBEAT":   1,
-	}
-)
-
-func (x EventType) Enum() *EventType {
-	p := new(EventType)
-	*p = x
-	return p
-}
-
-func (x EventType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (EventType) Descriptor() protoreflect.EnumDescriptor {
-	return file_proto_gar_proto_enumTypes[0].Descriptor()
-}
-
-func (EventType) Type() protoreflect.EnumType {
-	return &file_proto_gar_proto_enumTypes[0]
-}
-
-func (x EventType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use EventType.Descriptor instead.
-func (EventType) EnumDescriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{0}
-}
-
 // State represents the state of a session
 type State int32
 
@@ -103,11 +56,11 @@ func (x State) String() string {
 }
 
 func (State) Descriptor() protoreflect.EnumDescriptor {
-	return file_proto_gar_proto_enumTypes[1].Descriptor()
+	return file_proto_gar_proto_enumTypes[0].Descriptor()
 }
 
 func (State) Type() protoreflect.EnumType {
-	return &file_proto_gar_proto_enumTypes[1]
+	return &file_proto_gar_proto_enumTypes[0]
 }
 
 func (x State) Number() protoreflect.EnumNumber {
@@ -116,7 +69,7 @@ func (x State) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use State.Descriptor instead.
 func (State) EnumDescriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{1}
+	return file_proto_gar_proto_rawDescGZIP(), []int{0}
 }
 
 // Content represents a message with role, type, mimetype, and data fields
@@ -196,67 +149,6 @@ func (x *Content) GetCheckpointId() string {
 	return ""
 }
 
-// LifecycleEvent represents events from agent lifecycle
-type LifecycleEvent struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EventType     EventType              `protobuf:"varint,1,opt,name=event_type,json=eventType,proto3,enum=proto.EventType" json:"event_type,omitempty"`                                  // Event type
-	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=timestamp,proto3" json:"timestamp,omitempty"`                                                                         // Timestamp of the event
-	Metadata      map[string]string      `protobuf:"bytes,3,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // Additional event metadata
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *LifecycleEvent) Reset() {
-	*x = LifecycleEvent{}
-	mi := &file_proto_gar_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *LifecycleEvent) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*LifecycleEvent) ProtoMessage() {}
-
-func (x *LifecycleEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use LifecycleEvent.ProtoReflect.Descriptor instead.
-func (*LifecycleEvent) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *LifecycleEvent) GetEventType() EventType {
-	if x != nil {
-		return x.EventType
-	}
-	return EventType_EVENT_TYPE_UNSPECIFIED
-}
-
-func (x *LifecycleEvent) GetTimestamp() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Timestamp
-	}
-	return nil
-}
-
-func (x *LifecycleEvent) GetMetadata() map[string]string {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
-
 // HealthCheckRequest for agent health checks
 type HealthCheckRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -266,7 +158,7 @@ type HealthCheckRequest struct {
 
 func (x *HealthCheckRequest) Reset() {
 	*x = HealthCheckRequest{}
-	mi := &file_proto_gar_proto_msgTypes[2]
+	mi := &file_proto_gar_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -278,7 +170,7 @@ func (x *HealthCheckRequest) String() string {
 func (*HealthCheckRequest) ProtoMessage() {}
 
 func (x *HealthCheckRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[2]
+	mi := &file_proto_gar_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -291,7 +183,7 @@ func (x *HealthCheckRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HealthCheckRequest.ProtoReflect.Descriptor instead.
 func (*HealthCheckRequest) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{2}
+	return file_proto_gar_proto_rawDescGZIP(), []int{1}
 }
 
 // HealthCheckResponse contains agent health status
@@ -305,7 +197,7 @@ type HealthCheckResponse struct {
 
 func (x *HealthCheckResponse) Reset() {
 	*x = HealthCheckResponse{}
-	mi := &file_proto_gar_proto_msgTypes[3]
+	mi := &file_proto_gar_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -317,7 +209,7 @@ func (x *HealthCheckResponse) String() string {
 func (*HealthCheckResponse) ProtoMessage() {}
 
 func (x *HealthCheckResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[3]
+	mi := &file_proto_gar_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -330,7 +222,7 @@ func (x *HealthCheckResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HealthCheckResponse.ProtoReflect.Descriptor instead.
 func (*HealthCheckResponse) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{3}
+	return file_proto_gar_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *HealthCheckResponse) GetHealthy() bool {
@@ -359,7 +251,7 @@ type TriggerSessionRequest struct {
 
 func (x *TriggerSessionRequest) Reset() {
 	*x = TriggerSessionRequest{}
-	mi := &file_proto_gar_proto_msgTypes[4]
+	mi := &file_proto_gar_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -371,7 +263,7 @@ func (x *TriggerSessionRequest) String() string {
 func (*TriggerSessionRequest) ProtoMessage() {}
 
 func (x *TriggerSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[4]
+	mi := &file_proto_gar_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -384,7 +276,7 @@ func (x *TriggerSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TriggerSessionRequest.ProtoReflect.Descriptor instead.
 func (*TriggerSessionRequest) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{4}
+	return file_proto_gar_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *TriggerSessionRequest) GetSessionId() string {
@@ -420,7 +312,7 @@ type TriggerSessionResponse struct {
 
 func (x *TriggerSessionResponse) Reset() {
 	*x = TriggerSessionResponse{}
-	mi := &file_proto_gar_proto_msgTypes[5]
+	mi := &file_proto_gar_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -432,7 +324,7 @@ func (x *TriggerSessionResponse) String() string {
 func (*TriggerSessionResponse) ProtoMessage() {}
 
 func (x *TriggerSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[5]
+	mi := &file_proto_gar_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -445,7 +337,7 @@ func (x *TriggerSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TriggerSessionResponse.ProtoReflect.Descriptor instead.
 func (*TriggerSessionResponse) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{5}
+	return file_proto_gar_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *TriggerSessionResponse) GetSessionId() string {
@@ -479,7 +371,7 @@ type GetSessionRequest struct {
 
 func (x *GetSessionRequest) Reset() {
 	*x = GetSessionRequest{}
-	mi := &file_proto_gar_proto_msgTypes[6]
+	mi := &file_proto_gar_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -491,7 +383,7 @@ func (x *GetSessionRequest) String() string {
 func (*GetSessionRequest) ProtoMessage() {}
 
 func (x *GetSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[6]
+	mi := &file_proto_gar_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -504,7 +396,7 @@ func (x *GetSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSessionRequest.ProtoReflect.Descriptor instead.
 func (*GetSessionRequest) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{6}
+	return file_proto_gar_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetSessionRequest) GetSessionId() string {
@@ -530,7 +422,7 @@ type SessionInfo struct {
 
 func (x *SessionInfo) Reset() {
 	*x = SessionInfo{}
-	mi := &file_proto_gar_proto_msgTypes[7]
+	mi := &file_proto_gar_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -542,7 +434,7 @@ func (x *SessionInfo) String() string {
 func (*SessionInfo) ProtoMessage() {}
 
 func (x *SessionInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[7]
+	mi := &file_proto_gar_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -555,7 +447,7 @@ func (x *SessionInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SessionInfo.ProtoReflect.Descriptor instead.
 func (*SessionInfo) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{7}
+	return file_proto_gar_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *SessionInfo) GetState() State {
@@ -617,7 +509,7 @@ type GetSessionResponse struct {
 
 func (x *GetSessionResponse) Reset() {
 	*x = GetSessionResponse{}
-	mi := &file_proto_gar_proto_msgTypes[8]
+	mi := &file_proto_gar_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -629,7 +521,7 @@ func (x *GetSessionResponse) String() string {
 func (*GetSessionResponse) ProtoMessage() {}
 
 func (x *GetSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[8]
+	mi := &file_proto_gar_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -642,7 +534,7 @@ func (x *GetSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSessionResponse.ProtoReflect.Descriptor instead.
 func (*GetSessionResponse) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{8}
+	return file_proto_gar_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetSessionResponse) GetSession() *SessionInfo {
@@ -666,7 +558,7 @@ type RegisterAgentRequest struct {
 
 func (x *RegisterAgentRequest) Reset() {
 	*x = RegisterAgentRequest{}
-	mi := &file_proto_gar_proto_msgTypes[9]
+	mi := &file_proto_gar_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -678,7 +570,7 @@ func (x *RegisterAgentRequest) String() string {
 func (*RegisterAgentRequest) ProtoMessage() {}
 
 func (x *RegisterAgentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[9]
+	mi := &file_proto_gar_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -691,7 +583,7 @@ func (x *RegisterAgentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterAgentRequest.ProtoReflect.Descriptor instead.
 func (*RegisterAgentRequest) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{9}
+	return file_proto_gar_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *RegisterAgentRequest) GetAgentId() string {
@@ -738,7 +630,7 @@ type RegisterAgentResponse struct {
 
 func (x *RegisterAgentResponse) Reset() {
 	*x = RegisterAgentResponse{}
-	mi := &file_proto_gar_proto_msgTypes[10]
+	mi := &file_proto_gar_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -750,7 +642,7 @@ func (x *RegisterAgentResponse) String() string {
 func (*RegisterAgentResponse) ProtoMessage() {}
 
 func (x *RegisterAgentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[10]
+	mi := &file_proto_gar_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -763,7 +655,7 @@ func (x *RegisterAgentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterAgentResponse.ProtoReflect.Descriptor instead.
 func (*RegisterAgentResponse) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{10}
+	return file_proto_gar_proto_rawDescGZIP(), []int{9}
 }
 
 // UnregisterAgentRequest for unregistering an agent
@@ -776,7 +668,7 @@ type UnregisterAgentRequest struct {
 
 func (x *UnregisterAgentRequest) Reset() {
 	*x = UnregisterAgentRequest{}
-	mi := &file_proto_gar_proto_msgTypes[11]
+	mi := &file_proto_gar_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -788,7 +680,7 @@ func (x *UnregisterAgentRequest) String() string {
 func (*UnregisterAgentRequest) ProtoMessage() {}
 
 func (x *UnregisterAgentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[11]
+	mi := &file_proto_gar_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -801,7 +693,7 @@ func (x *UnregisterAgentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnregisterAgentRequest.ProtoReflect.Descriptor instead.
 func (*UnregisterAgentRequest) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{11}
+	return file_proto_gar_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UnregisterAgentRequest) GetAgentId() string {
@@ -820,7 +712,7 @@ type UnregisterAgentResponse struct {
 
 func (x *UnregisterAgentResponse) Reset() {
 	*x = UnregisterAgentResponse{}
-	mi := &file_proto_gar_proto_msgTypes[12]
+	mi := &file_proto_gar_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -832,7 +724,7 @@ func (x *UnregisterAgentResponse) String() string {
 func (*UnregisterAgentResponse) ProtoMessage() {}
 
 func (x *UnregisterAgentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_gar_proto_msgTypes[12]
+	mi := &file_proto_gar_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -845,7 +737,7 @@ func (x *UnregisterAgentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UnregisterAgentResponse.ProtoReflect.Descriptor instead.
 func (*UnregisterAgentResponse) Descriptor() ([]byte, []int) {
-	return file_proto_gar_proto_rawDescGZIP(), []int{12}
+	return file_proto_gar_proto_rawDescGZIP(), []int{11}
 }
 
 var File_proto_gar_proto protoreflect.FileDescriptor
@@ -858,15 +750,7 @@ const file_proto_gar_proto_rawDesc = "" +
 	"\x04type\x18\x02 \x01(\tR\x04type\x12\x1a\n" +
 	"\bmimetype\x18\x03 \x01(\tR\bmimetype\x12\x12\n" +
 	"\x04data\x18\x04 \x01(\tR\x04data\x12#\n" +
-	"\rcheckpoint_id\x18\x05 \x01(\tR\fcheckpointId\"\xf9\x01\n" +
-	"\x0eLifecycleEvent\x12/\n" +
-	"\n" +
-	"event_type\x18\x01 \x01(\x0e2\x10.proto.EventTypeR\teventType\x128\n" +
-	"\ttimestamp\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12?\n" +
-	"\bmetadata\x18\x03 \x03(\v2#.proto.LifecycleEvent.MetadataEntryR\bmetadata\x1a;\n" +
-	"\rMetadataEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x14\n" +
+	"\rcheckpoint_id\x18\x05 \x01(\tR\fcheckpointId\"\x14\n" +
 	"\x12HealthCheckRequest\"I\n" +
 	"\x13HealthCheckResponse\x12\x18\n" +
 	"\ahealthy\x18\x01 \x01(\bR\ahealthy\x12\x18\n" +
@@ -908,17 +792,13 @@ const file_proto_gar_proto_rawDesc = "" +
 	"\x15RegisterAgentResponse\"3\n" +
 	"\x16UnregisterAgentRequest\x12\x19\n" +
 	"\bagent_id\x18\x01 \x01(\tR\aagentId\"\x19\n" +
-	"\x17UnregisterAgentResponse*A\n" +
-	"\tEventType\x12\x1a\n" +
-	"\x16EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x18\n" +
-	"\x14EVENT_TYPE_HEARTBEAT\x10\x01*C\n" +
+	"\x17UnregisterAgentResponse*C\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x11\n" +
 	"\rSTATE_RUNNING\x10\x01\x12\x10\n" +
-	"\fSTATE_FAILED\x10\x022\xc8\x01\n" +
+	"\fSTATE_FAILED\x10\x022\x83\x01\n" +
 	"\fAgentService\x12-\n" +
-	"\aProcess\x12\x0e.proto.Content\x1a\x0e.proto.Content(\x010\x01\x12C\n" +
-	"\x0fStreamLifecycle\x12\x15.proto.LifecycleEvent\x1a\x15.proto.LifecycleEvent(\x010\x01\x12D\n" +
+	"\aProcess\x12\x0e.proto.Content\x1a\x0e.proto.Content(\x010\x01\x12D\n" +
 	"\vHealthCheck\x12\x19.proto.HealthCheckRequest\x1a\x1a.proto.HealthCheckResponse2\xbe\x02\n" +
 	"\n" +
 	"GARService\x12O\n" +
@@ -940,59 +820,51 @@ func file_proto_gar_proto_rawDescGZIP() []byte {
 	return file_proto_gar_proto_rawDescData
 }
 
-var file_proto_gar_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_proto_gar_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_proto_gar_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_proto_gar_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_proto_gar_proto_goTypes = []any{
-	(EventType)(0),                  // 0: proto.EventType
-	(State)(0),                      // 1: proto.State
-	(*Content)(nil),                 // 2: proto.Content
-	(*LifecycleEvent)(nil),          // 3: proto.LifecycleEvent
-	(*HealthCheckRequest)(nil),      // 4: proto.HealthCheckRequest
-	(*HealthCheckResponse)(nil),     // 5: proto.HealthCheckResponse
-	(*TriggerSessionRequest)(nil),   // 6: proto.TriggerSessionRequest
-	(*TriggerSessionResponse)(nil),  // 7: proto.TriggerSessionResponse
-	(*GetSessionRequest)(nil),       // 8: proto.GetSessionRequest
-	(*SessionInfo)(nil),             // 9: proto.SessionInfo
-	(*GetSessionResponse)(nil),      // 10: proto.GetSessionResponse
-	(*RegisterAgentRequest)(nil),    // 11: proto.RegisterAgentRequest
-	(*RegisterAgentResponse)(nil),   // 12: proto.RegisterAgentResponse
-	(*UnregisterAgentRequest)(nil),  // 13: proto.UnregisterAgentRequest
-	(*UnregisterAgentResponse)(nil), // 14: proto.UnregisterAgentResponse
-	nil,                             // 15: proto.LifecycleEvent.MetadataEntry
-	nil,                             // 16: proto.RegisterAgentRequest.MetadataEntry
-	(*timestamppb.Timestamp)(nil),   // 17: google.protobuf.Timestamp
+	(State)(0),                      // 0: proto.State
+	(*Content)(nil),                 // 1: proto.Content
+	(*HealthCheckRequest)(nil),      // 2: proto.HealthCheckRequest
+	(*HealthCheckResponse)(nil),     // 3: proto.HealthCheckResponse
+	(*TriggerSessionRequest)(nil),   // 4: proto.TriggerSessionRequest
+	(*TriggerSessionResponse)(nil),  // 5: proto.TriggerSessionResponse
+	(*GetSessionRequest)(nil),       // 6: proto.GetSessionRequest
+	(*SessionInfo)(nil),             // 7: proto.SessionInfo
+	(*GetSessionResponse)(nil),      // 8: proto.GetSessionResponse
+	(*RegisterAgentRequest)(nil),    // 9: proto.RegisterAgentRequest
+	(*RegisterAgentResponse)(nil),   // 10: proto.RegisterAgentResponse
+	(*UnregisterAgentRequest)(nil),  // 11: proto.UnregisterAgentRequest
+	(*UnregisterAgentResponse)(nil), // 12: proto.UnregisterAgentResponse
+	nil,                             // 13: proto.RegisterAgentRequest.MetadataEntry
+	(*timestamppb.Timestamp)(nil),   // 14: google.protobuf.Timestamp
 }
 var file_proto_gar_proto_depIdxs = []int32{
-	0,  // 0: proto.LifecycleEvent.event_type:type_name -> proto.EventType
-	17, // 1: proto.LifecycleEvent.timestamp:type_name -> google.protobuf.Timestamp
-	15, // 2: proto.LifecycleEvent.metadata:type_name -> proto.LifecycleEvent.MetadataEntry
-	2,  // 3: proto.TriggerSessionRequest.inputs:type_name -> proto.Content
-	1,  // 4: proto.TriggerSessionResponse.state:type_name -> proto.State
-	2,  // 5: proto.TriggerSessionResponse.output:type_name -> proto.Content
-	1,  // 6: proto.SessionInfo.state:type_name -> proto.State
-	17, // 7: proto.SessionInfo.created_at:type_name -> google.protobuf.Timestamp
-	17, // 8: proto.SessionInfo.updated_at:type_name -> google.protobuf.Timestamp
-	9,  // 9: proto.GetSessionResponse.session:type_name -> proto.SessionInfo
-	16, // 10: proto.RegisterAgentRequest.metadata:type_name -> proto.RegisterAgentRequest.MetadataEntry
-	2,  // 11: proto.AgentService.Process:input_type -> proto.Content
-	3,  // 12: proto.AgentService.StreamLifecycle:input_type -> proto.LifecycleEvent
-	4,  // 13: proto.AgentService.HealthCheck:input_type -> proto.HealthCheckRequest
-	6,  // 14: proto.GARService.TriggerSession:input_type -> proto.TriggerSessionRequest
-	8,  // 15: proto.GARService.GetSession:input_type -> proto.GetSessionRequest
-	11, // 16: proto.GARService.RegisterAgent:input_type -> proto.RegisterAgentRequest
-	13, // 17: proto.GARService.UnregisterAgent:input_type -> proto.UnregisterAgentRequest
-	2,  // 18: proto.AgentService.Process:output_type -> proto.Content
-	3,  // 19: proto.AgentService.StreamLifecycle:output_type -> proto.LifecycleEvent
-	5,  // 20: proto.AgentService.HealthCheck:output_type -> proto.HealthCheckResponse
-	7,  // 21: proto.GARService.TriggerSession:output_type -> proto.TriggerSessionResponse
-	10, // 22: proto.GARService.GetSession:output_type -> proto.GetSessionResponse
-	12, // 23: proto.GARService.RegisterAgent:output_type -> proto.RegisterAgentResponse
-	14, // 24: proto.GARService.UnregisterAgent:output_type -> proto.UnregisterAgentResponse
-	18, // [18:25] is the sub-list for method output_type
-	11, // [11:18] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	1,  // 0: proto.TriggerSessionRequest.inputs:type_name -> proto.Content
+	0,  // 1: proto.TriggerSessionResponse.state:type_name -> proto.State
+	1,  // 2: proto.TriggerSessionResponse.output:type_name -> proto.Content
+	0,  // 3: proto.SessionInfo.state:type_name -> proto.State
+	14, // 4: proto.SessionInfo.created_at:type_name -> google.protobuf.Timestamp
+	14, // 5: proto.SessionInfo.updated_at:type_name -> google.protobuf.Timestamp
+	7,  // 6: proto.GetSessionResponse.session:type_name -> proto.SessionInfo
+	13, // 7: proto.RegisterAgentRequest.metadata:type_name -> proto.RegisterAgentRequest.MetadataEntry
+	1,  // 8: proto.AgentService.Process:input_type -> proto.Content
+	2,  // 9: proto.AgentService.HealthCheck:input_type -> proto.HealthCheckRequest
+	4,  // 10: proto.GARService.TriggerSession:input_type -> proto.TriggerSessionRequest
+	6,  // 11: proto.GARService.GetSession:input_type -> proto.GetSessionRequest
+	9,  // 12: proto.GARService.RegisterAgent:input_type -> proto.RegisterAgentRequest
+	11, // 13: proto.GARService.UnregisterAgent:input_type -> proto.UnregisterAgentRequest
+	1,  // 14: proto.AgentService.Process:output_type -> proto.Content
+	3,  // 15: proto.AgentService.HealthCheck:output_type -> proto.HealthCheckResponse
+	5,  // 16: proto.GARService.TriggerSession:output_type -> proto.TriggerSessionResponse
+	8,  // 17: proto.GARService.GetSession:output_type -> proto.GetSessionResponse
+	10, // 18: proto.GARService.RegisterAgent:output_type -> proto.RegisterAgentResponse
+	12, // 19: proto.GARService.UnregisterAgent:output_type -> proto.UnregisterAgentResponse
+	14, // [14:20] is the sub-list for method output_type
+	8,  // [8:14] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_proto_gar_proto_init() }
@@ -1005,8 +877,8 @@ func file_proto_gar_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_gar_proto_rawDesc), len(file_proto_gar_proto_rawDesc)),
-			NumEnums:      2,
-			NumMessages:   15,
+			NumEnums:      1,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

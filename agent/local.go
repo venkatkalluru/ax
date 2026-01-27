@@ -12,7 +12,6 @@ import (
 type LocalAgent struct {
 	id              string
 	processFunc     func(ctx context.Context, sessionID string, inputs []*proto.Content, handler OutputHandler) error
-	lifecycleFunc   func(ctx context.Context, handler LifecycleHandler) error
 	healthCheckFunc func(ctx context.Context) error
 }
 
@@ -20,7 +19,6 @@ type LocalAgent struct {
 type LocalAgentConfig struct {
 	ID              string
 	ProcessFunc     func(ctx context.Context, sessionID string, inputs []*proto.Content, handler OutputHandler) error
-	LifecycleFunc   func(ctx context.Context, handler LifecycleHandler) error
 	HealthCheckFunc func(ctx context.Context) error
 }
 
@@ -37,17 +35,10 @@ func NewLocalAgent(config LocalAgentConfig) (*LocalAgent, error) {
 	if config.HealthCheckFunc == nil {
 		config.HealthCheckFunc = func(ctx context.Context) error { return nil }
 	}
-	if config.LifecycleFunc == nil {
-		config.LifecycleFunc = func(ctx context.Context, handler LifecycleHandler) error {
-			// Default: no lifecycle events
-			return nil
-		}
-	}
 
 	return &LocalAgent{
 		id:              config.ID,
 		processFunc:     config.ProcessFunc,
-		lifecycleFunc:   config.LifecycleFunc,
 		healthCheckFunc: config.HealthCheckFunc,
 	}, nil
 }
@@ -55,11 +46,6 @@ func NewLocalAgent(config LocalAgentConfig) (*LocalAgent, error) {
 // Process handles processing of input content with callback handler.
 func (a *LocalAgent) Process(ctx context.Context, sessionID string, inputs []*proto.Content, handler OutputHandler) error {
 	return a.processFunc(ctx, sessionID, inputs, handler)
-}
-
-// StreamLifecycle streams lifecycle events using callback handler.
-func (a *LocalAgent) StreamLifecycle(ctx context.Context, handler LifecycleHandler) error {
-	return a.lifecycleFunc(ctx, handler)
 }
 
 // HealthCheck checks if the agent is healthy.

@@ -6,9 +6,7 @@ A simple framework for building Python agents that work with the GAR orchestrato
 
 import grpc
 from concurrent import futures
-import time
 from typing import Callable, Iterator, Optional, Dict
-from google.protobuf import timestamp_pb2
 
 
 class Agent:
@@ -29,7 +27,6 @@ class Agent:
         self,
         agent_id: str,
         process_func: Callable,
-        lifecycle_func: Optional[Callable] = None,
         health_check_func: Optional[Callable] = None
     ):
         """
@@ -38,12 +35,10 @@ class Agent:
         Args:
             agent_id: Unique identifier for this agent
             process_func: Function that takes (session_id: str, inputs: list) and yields Content responses
-            lifecycle_func: Optional function that yields LifecycleEvent objects
             health_check_func: Optional function that returns (healthy: bool, message: str, metadata: dict)
         """
         self.agent_id = agent_id
         self.process_func = process_func
-        self.lifecycle_func = lifecycle_func
         self.health_check_func = health_check_func
 
     def _create_servicer(self, pb2, pb2_grpc):
@@ -63,22 +58,6 @@ class Agent:
                 for response in agent.process_func(session_id, inputs):
                     if response:
                         yield response
-
-            def StreamLifecycle(self, request_iterator, context):
-                if agent.lifecycle_func:
-                    for event in agent.lifecycle_func(context):
-                        yield event
-                else:
-                    # Default: send periodic heartbeats
-                    while context.is_active():
-                        timestamp = timestamp_pb2.Timestamp()
-                        timestamp.GetCurrentTime()
-                        event = pb2.LifecycleEvent(
-                            event_type=pb2.EVENT_TYPE_HEARTBEAT,
-                            timestamp=timestamp
-                        )
-                        yield event
-                        time.sleep(30)
 
             def HealthCheck(self, request, context):
                 if agent.health_check_func:
@@ -132,7 +111,6 @@ class Agent:
 def create_agent(
     agent_id: str,
     process_func: Callable,
-    lifecycle_func: Optional[Callable] = None,
     health_check_func: Optional[Callable] = None,
     port: int = 50051
 ):
@@ -142,9 +120,8 @@ def create_agent(
     Args:
         agent_id: Unique identifier for this agent
         process_func: Function that takes (session_id: str, inputs: list) and yields Content responses
-        lifecycle_func: Optional function that yields LifecycleEvent objects
         health_check_func: Optional function that returns (healthy: bool, message: str, metadata: dict)
         port: Port to listen on (default: 50051)
     """
-    agent = Agent(agent_id, process_func, lifecycle_func, health_check_func)
+    agent = Agent(agent_id, process_func, health_check_func)
     agent.serve(port=port)

@@ -267,15 +267,6 @@ processFunc := func(ctx context.Context, sessionID string, inputs []*proto.Conte
     return nil
 }
 
-// Define lifecycle function (optional)
-lifecycleFunc := func(ctx context.Context, handler agent.LifecycleHandler) error {
-    // Send lifecycle events via handler callback
-    return handler(&proto.LifecycleEvent{
-        EventType: proto.EventType_EVENT_TYPE_HEARTBEAT,
-        Timestamp: timestamppb.Now(),
-    })
-}
-
 // Define health check function (optional)
 healthCheckFunc := func(ctx context.Context) error {
     // Return nil if healthy, error otherwise
@@ -286,7 +277,6 @@ healthCheckFunc := func(ctx context.Context) error {
 myAgent, err := agent.NewLocalAgent(agent.LocalAgentConfig{
     ID:              "my-agent",
     ProcessFunc:     processFunc,
-    LifecycleFunc:   lifecycleFunc,       // optional
     HealthCheckFunc: healthCheckFunc,     // optional
 })
 ```
@@ -327,11 +317,6 @@ func (s *server) Process(stream proto.AgentService_ProcessServer) error {
     }
 }
 
-func (s *server) StreamLifecycle(stream proto.AgentService_StreamLifecycleServer) error {
-    // Stream lifecycle events to gar controller
-    // Send periodic HEARTBEAT events
-}
-
 func (s *server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest) (*proto.HealthCheckResponse, error) {
     // Return health status for gar controller health monitoring
     return &proto.HealthCheckResponse{
@@ -368,14 +353,14 @@ Then implement your agent using the framework:
 from gar import Agent
 import proto.gar_pb2 as pb2
 
-def process(inputs):
+def process(session_id, inputs):
     """Process incoming content list and yield responses"""
     for content in inputs:
         yield pb2.Content(
             role="assistant",
             type="text",
             mimetype="text/plain",
-            data=f"Python processed: {content.data.upper()}"
+            data=f"Python processed (session {session_id}): {content.data.upper()}"
         )
 
 def health_check():
