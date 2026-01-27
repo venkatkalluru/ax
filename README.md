@@ -12,7 +12,7 @@ GAR, a short for Google Agent Runtime, is a single-writer agent orchestrator sys
 Built-in consistency and resumability features:
 - **Single-Writer Architecture**: Centralized controller ensures consistent state management
 - **Event Log**: Durable session state with automatic recovery
-- **Lifecycle Events**: PROGRESS and HEARTBEAT events for monitoring agent health
+- **Lifecycle Events**: HEARTBEAT events for monitoring agent health
 
 ## Overview
 
@@ -271,7 +271,7 @@ processFunc := func(ctx context.Context, sessionID string, inputs []*proto.Conte
 lifecycleFunc := func(ctx context.Context, handler agent.LifecycleHandler) error {
     // Send lifecycle events via handler callback
     return handler(&proto.LifecycleEvent{
-        EventType: proto.EventType_EVENT_TYPE_PROGRESS,
+        EventType: proto.EventType_EVENT_TYPE_HEARTBEAT,
         Timestamp: timestamppb.Now(),
     })
 }
@@ -329,7 +329,7 @@ func (s *server) Process(stream proto.AgentService_ProcessServer) error {
 
 func (s *server) StreamLifecycle(stream proto.AgentService_StreamLifecycleServer) error {
     // Stream lifecycle events to gar controller
-    // Send periodic PROGRESS, HEARTBEAT events
+    // Send periodic HEARTBEAT events
 }
 
 func (s *server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest) (*proto.HealthCheckResponse, error) {

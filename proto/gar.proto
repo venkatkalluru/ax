@@ -20,7 +20,6 @@ message Content {
 // EventType represents the type of lifecycle event
 enum EventType {
   EVENT_TYPE_UNSPECIFIED = 0;  // Unspecified event type
-  EVENT_TYPE_PROGRESS = 1;     // Progress update
   EVENT_TYPE_HEARTBEAT = 2;    // Heartbeat signal
 }
 

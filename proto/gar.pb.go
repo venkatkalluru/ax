@@ -27,7 +27,6 @@ type EventType int32
 
 const (
 	EventType_EVENT_TYPE_UNSPECIFIED EventType = 0 // Unspecified event type
-	EventType_EVENT_TYPE_PROGRESS    EventType = 1 // Progress update
 	EventType_EVENT_TYPE_HEARTBEAT   EventType = 2 // Heartbeat signal
 )
 
@@ -35,12 +34,10 @@ const (
 var (
 	EventType_name = map[int32]string{
 		0: "EVENT_TYPE_UNSPECIFIED",
-		1: "EVENT_TYPE_PROGRESS",
 		2: "EVENT_TYPE_HEARTBEAT",
 	}
 	EventType_value = map[string]int32{
 		"EVENT_TYPE_UNSPECIFIED": 0,
-		"EVENT_TYPE_PROGRESS":    1,
 		"EVENT_TYPE_HEARTBEAT":   2,
 	}
 )
@@ -911,10 +908,9 @@ const file_proto_gar_proto_rawDesc = "" +
 	"\x15RegisterAgentResponse\"3\n" +
 	"\x16UnregisterAgentRequest\x12\x19\n" +
 	"\bagent_id\x18\x01 \x01(\tR\aagentId\"\x19\n" +
-	"\x17UnregisterAgentResponse*Z\n" +
+	"\x17UnregisterAgentResponse*A\n" +
 	"\tEventType\x12\x1a\n" +
-	"\x16EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x17\n" +
-	"\x13EVENT_TYPE_PROGRESS\x10\x01\x12\x18\n" +
+	"\x16EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14EVENT_TYPE_HEARTBEAT\x10\x02*C\n" +
 	"\x05State\x12\x15\n" +
 	"\x11STATE_UNSPECIFIED\x10\x00\x12\x11\n" +

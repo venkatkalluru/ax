@@ -97,9 +97,9 @@ func createEchoAgent(id string) (*agent.LocalAgent, error) {
 	}
 
 	lifecycleFunc := func(ctx context.Context, handler agent.LifecycleHandler) error {
-		// Send initial PROGRESS event
+		// Send initial heartbeat event
 		if err := handler(&proto.LifecycleEvent{
-			EventType: proto.EventType_EVENT_TYPE_PROGRESS,
+			EventType: proto.EventType_EVENT_TYPE_HEARTBEAT,
 			Timestamp: timestamppb.Now(),
 		}); err != nil {
 			return err
@@ -113,7 +113,7 @@ func createEchoAgent(id string) (*agent.LocalAgent, error) {
 			select {
 			case <-ticker.C:
 				if err := handler(&proto.LifecycleEvent{
-					EventType: proto.EventType_EVENT_TYPE_PROGRESS,
+					EventType: proto.EventType_EVENT_TYPE_HEARTBEAT,
 					Timestamp: timestamppb.Now(),
 				}); err != nil {
 					return err
