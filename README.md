@@ -413,7 +413,6 @@ gar trigger \
 
 - [ ] Observability and trajectory collection
 - [ ] TLS support for remote agents
-- [ ] Advanced load balancing strategies
 - [ ] Make checkpointing optional
 - [ ] gar deploy from container
 - [ ] Fork session when resuming from a checkpoint that isn't the latest
