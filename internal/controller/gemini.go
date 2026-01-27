@@ -226,6 +226,7 @@ func agentsToTools(registry *Registry, agentIDs []string) ([]*genai.Tool, error)
 
 // sessionToHistory converts session message history to Gemini conversation format.
 func sessionToHistory(session *Session, contextWindow int) []*genai.Content {
+	// TODO(jbd): Remove the dead code, and replace it with a compactor.
 	var history []*genai.Content
 
 	// Get recent messages within context window
