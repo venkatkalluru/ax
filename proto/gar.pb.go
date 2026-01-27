@@ -7,13 +7,12 @@
 package proto
 
 import (
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
-
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
 )
 
 const (
@@ -28,7 +27,7 @@ type EventType int32
 
 const (
 	EventType_EVENT_TYPE_UNSPECIFIED EventType = 0 // Unspecified event type
-	EventType_EVENT_TYPE_HEARTBEAT   EventType = 1 // Heartbeat signal
+	EventType_EVENT_TYPE_HEARTBEAT   EventType = 2 // Heartbeat signal
 )
 
 // Enum value maps for EventType.
