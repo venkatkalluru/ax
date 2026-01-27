@@ -49,8 +49,8 @@ func (sm *SessionManager) NewSession(sessionID string) (*Session, error) {
 	sm.mu.Lock()
 	defer sm.mu.Unlock()
 
-	// Check if session already exists
-	if _, exists := sm.sessions[sessionID]; exists {
+	// Check if session already ok
+	if _, ok := sm.sessions[sessionID]; ok {
 		return nil, fmt.Errorf("session %s already exists", sessionID)
 	}
 
@@ -173,8 +173,8 @@ func (sm *SessionManager) GetSession(sessionID string) (*Session, error) {
 	sm.mu.RLock()
 	defer sm.mu.RUnlock()
 
-	session, exists := sm.sessions[sessionID]
-	if !exists {
+	session, ok := sm.sessions[sessionID]
+	if !ok {
 		return nil, fmt.Errorf("session %s not found", sessionID)
 	}
 
@@ -186,8 +186,8 @@ func (sm *SessionManager) CloseSession(sessionID string) error {
 	sm.mu.Lock()
 	defer sm.mu.Unlock()
 
-	session, exists := sm.sessions[sessionID]
-	if !exists {
+	session, ok := sm.sessions[sessionID]
+	if !ok {
 		return fmt.Errorf("session %s not found", sessionID)
 	}
 
