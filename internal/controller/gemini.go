@@ -235,13 +235,6 @@ func sessionToHistory(session *Session, contextWindow int) []*genai.Content {
 	// Convert each message to Gemini format
 	for _, msg := range messages {
 		role := msg.Role
-		// Map roles to Gemini's expected roles
-		if role == "assistant" {
-			role = "model"
-		} else if role != "user" {
-			role = "user" // Default to user for other roles
-		}
-
 		history = append(history, &genai.Content{
 			Role: role,
 			Parts: []genai.Part{
