@@ -75,6 +75,8 @@ func main() {
 
 	// Trigger a session
 	sessionID := uuid.New().String()
+	log.Printf("Session ID: %s\n", sessionID)
+
 	handler := agent.OutputHandler(func(content *proto.Content) error {
 		fmt.Printf("Output received: %s\n", content.Data)
 		return nil
