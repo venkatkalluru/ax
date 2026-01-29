@@ -58,6 +58,7 @@ func (s *Server) TriggerSession(req *proto.TriggerSessionRequest, stream grpc.Se
 		return fmt.Errorf("session_id is required")
 	}
 
+	// TODO(jbd): This state update should be sent directly from the controller.
 	if err := stream.Send(&proto.TriggerSessionResponse{
 		State:     proto.State_STATE_RUNNING,
 		SessionId: sessionID,
