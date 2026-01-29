@@ -188,8 +188,8 @@ func (e *LoopExecutor) executeTask(ctx context.Context, session *Session, task *
 	// Define output handler to collect responses
 	outputHandler := func(content *proto.Content) error {
 		output = append(output, content)
-		if _, err := session.WriteContentOut(ctx, content); err != nil {
-			return fmt.Errorf("failed to write output: %w", err)
+		if _, err := session.WriteContentIn(ctx, content); err != nil {
+			return fmt.Errorf("failed to write task inputs: %w", err)
 		}
 		return nil
 	}
