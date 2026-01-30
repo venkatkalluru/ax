@@ -166,7 +166,7 @@ func protoToContents(inputs []*proto.Content) []*genai.Content {
 	// Convert each message to Gemini format
 	for _, msg := range inputs {
 		role := msg.Role
-		if role == "assistant" {
+		if role != "user" {
 			role = "model"
 		}
 		contents = append(contents, &genai.Content{
