@@ -37,22 +37,15 @@ type server struct {
 // Process implements bidirectional streaming for content processing.
 // This RPC is called by the gar controller when a session triggers this agent.
 func (s *server) Process(stream proto.AgentService_ProcessServer) error {
-	log.Println("Process stream started - gar controller connected")
-
 	for {
 		// Receive input content from gar controller
 		content, err := stream.Recv()
 		if err == io.EOF {
-			log.Println("Process stream closed by gar controller")
 			return nil
 		}
 		if err != nil {
-			log.Printf("Error receiving from controller: %v", err)
 			return err
 		}
-
-		log.Printf("Received from controller: role=%s, type=%s, data=%s",
-			content.Role, content.Type, content.Data)
 
 		// Process the content (simple uppercase echo)
 		response := &proto.Content{
@@ -64,7 +57,6 @@ func (s *server) Process(stream proto.AgentService_ProcessServer) error {
 
 		// Send response back to gar controller
 		if err := stream.Send(response); err != nil {
-			log.Printf("Error sending to controller: %v", err)
 			return err
 		}
 
