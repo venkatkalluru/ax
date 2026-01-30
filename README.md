@@ -190,9 +190,9 @@ health_check_interval: 30s
 
 # Remote agents to register on startup
 remote_agents:
-  - id: "python-agent"
-    name: "Python Agent"
-    description: "Python-based agent for text processing"
+  - id: "text-processing-agent"
+    name: "Text Processing Agent"
+    description: "An agent for text processing"
     address: "localhost:50051"
     metadata:
       version: "1.0"
@@ -359,7 +359,7 @@ def process(session_id, inputs):
             role="assistant",
             type="text",
             mimetype="text/plain",
-            data=f"Python processed (session {session_id}): {content.data.upper()}"
+            data=f"Python processed: {content.data.upper()}"
         )
 
 def health_check():
@@ -383,14 +383,14 @@ python agent.py
 # Register with gar (in another terminal)
 gar register \
   --agent-id python-agent \
-  --agent-name "Python Agent" \
-  --agent-description "Python-based agent" \
+  --agent-name "Text Processing Agent" \
+  --agent-description "An agent that processes text" \
   --agent-addr localhost:50051
 
 # Trigger a session
 gar trigger \
   --session-id session123 \
-  --input "Hello, I heard that there is a Python agent that can help!"
+  --input "Hello, I heard that there is an agent that can help with processing this text!"
 ```
 
 ## Future Enhancements
