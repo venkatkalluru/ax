@@ -20,6 +20,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/google/gar/agent"
 	"gopkg.in/yaml.v3"
 )
 
@@ -68,6 +69,14 @@ type RemoteAgentConfig struct {
 	Description string            `yaml:"description"`        // Description of agent capabilities
 	Address     string            `yaml:"address"`            // gRPC address (e.g., "localhost:50051")
 	Metadata    map[string]string `yaml:"metadata,omitempty"` // Optional metadata
+}
+
+type LocalAgentConfig struct {
+	ID          string            // Unique agent identifier
+	Name        string            // Human-readable name
+	Description string            // Description of agent capabilities
+	Metadata    map[string]string // Optional metadata
+	Agent       agent.Agent       // In-process agent instance (not in YAML)
 }
 
 // LoadFromFile loads configuration from a YAML file.

@@ -75,23 +75,23 @@ func NewRegistry(healthCheckInterval time.Duration) *Registry {
 }
 
 // RegisterLocal registers a local (in-process) agent.
-func (r *Registry) RegisterLocal(a agent.Agent, id, name, description string, metadata map[string]string) error {
+func (r *Registry) RegisterLocal(cfg config.LocalAgentConfig) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if _, ok := r.agents[id]; ok {
-		return fmt.Errorf("agent %s already registered", id)
+	if _, ok := r.agents[cfg.ID]; ok {
+		return fmt.Errorf("agent %s already registered", cfg.ID)
 	}
 
-	r.agents[id] = a
-	r.agentInfo[id] = &AgentInfo{
-		ID:              id,
-		Name:            name,
-		Description:     description,
+	r.agents[cfg.ID] = cfg.Agent
+	r.agentInfo[cfg.ID] = &AgentInfo{
+		ID:              cfg.ID,
+		Name:            cfg.Name,
+		Description:     cfg.Description,
 		Type:            AgentTypeLocal,
 		Healthy:         true,
 		LastHealthCheck: time.Now(),
-		Metadata:        metadata,
+		Metadata:        cfg.Metadata,
 	}
 
 	return nil

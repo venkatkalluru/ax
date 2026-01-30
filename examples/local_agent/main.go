@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/google/gar/agent"
+	"github.com/google/gar/internal/config"
 	"github.com/google/gar/internal/controller"
 	"github.com/google/gar/internal/eventlog"
 	"github.com/google/gar/proto"
@@ -52,14 +53,15 @@ func main() {
 	}
 	defer c.Close()
 
-	if err := c.Registry().RegisterLocal(
-		echoAgent,
-		"local-echo-agent",
-		"Echo Agent",
-		"Simple echo agent that uppercases input",
-		map[string]string{
+	if err := c.Registry().RegisterLocal(config.LocalAgentConfig{
+		ID:          "local-echo-agent",
+		Name:        "Echo Agent",
+		Description: "Simple echo agent that uppercases input",
+		Metadata: map[string]string{
 			"version": "1.0",
-		}); err != nil {
+		},
+		Agent: echoAgent,
+	}); err != nil {
 		log.Fatalf("Error registering agent: %v\n", err)
 	}
 
