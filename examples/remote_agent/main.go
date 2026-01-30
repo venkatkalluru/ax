@@ -32,13 +32,6 @@ const port = ":50051"
 // server implements the AgentService gRPC server.
 type server struct {
 	proto.UnimplementedAgentServiceServer
-	agentID string
-}
-
-func newServer(agentID string) *server {
-	return &server{
-		agentID: agentID,
-	}
 }
 
 // Process implements bidirectional streaming for content processing.
@@ -90,8 +83,6 @@ func (s *server) HealthCheck(ctx context.Context, req *proto.HealthCheckRequest)
 }
 
 func main() {
-	const agentID = "remote-echo-agent"
-
 	fmt.Printf("Listening on port: %s\n", port)
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
@@ -99,7 +90,7 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	proto.RegisterAgentServiceServer(grpcServer, newServer(agentID))
+	proto.RegisterAgentServiceServer(grpcServer, &server{})
 
 	fmt.Println("\nAgent server is running...")
 	if err := grpcServer.Serve(lis); err != nil {
