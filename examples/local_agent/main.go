@@ -32,7 +32,7 @@ func main() {
 	ctx := context.Background()
 
 	// Create a local echo agent
-	echoAgent, err := createEchoAgent("local-echo-agent")
+	echoAgent, err := createEchoAgent()
 	if err != nil {
 		log.Fatalf("Error creating agent: %v\n", err)
 	}
@@ -86,7 +86,7 @@ func main() {
 }
 
 // createEchoAgent creates a simple echo agent that repeats input with a prefix.
-func createEchoAgent(id string) (*agent.LocalAgent, error) {
+func createEchoAgent() (*agent.LocalAgent, error) {
 	processFunc := func(ctx context.Context, sessionID string, inputs []*proto.Content, handler agent.OutputHandler) error {
 		// Process each input and call handler with response
 		for _, content := range inputs {
@@ -120,7 +120,6 @@ func createEchoAgent(id string) (*agent.LocalAgent, error) {
 	}
 
 	return agent.NewLocalAgent(agent.LocalAgentConfig{
-		ID:              id,
 		ProcessFunc:     processFunc,
 		HealthCheckFunc: healthCheckFunc,
 	})

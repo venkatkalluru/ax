@@ -24,23 +24,18 @@ import (
 // LocalAgent wraps a local (in-process) agent implementation.
 // It implements the Agent interface for agents running in the same process as the dispatcher.
 type LocalAgent struct {
-	id              string
 	processFunc     func(ctx context.Context, sessionID string, inputs []*proto.Content, handler OutputHandler) error
 	healthCheckFunc func(ctx context.Context) error
 }
 
 // LocalAgentConfig configures a local agent.
 type LocalAgentConfig struct {
-	ID              string
 	ProcessFunc     func(ctx context.Context, sessionID string, inputs []*proto.Content, handler OutputHandler) error
 	HealthCheckFunc func(ctx context.Context) error
 }
 
 // NewLocalAgent creates a new local agent with the provided configuration.
 func NewLocalAgent(config LocalAgentConfig) (*LocalAgent, error) {
-	if config.ID == "" {
-		return nil, fmt.Errorf("agent ID cannot be empty")
-	}
 	if config.ProcessFunc == nil {
 		return nil, fmt.Errorf("ProcessFunc cannot be nil")
 	}
@@ -51,7 +46,6 @@ func NewLocalAgent(config LocalAgentConfig) (*LocalAgent, error) {
 	}
 
 	return &LocalAgent{
-		id:              config.ID,
 		processFunc:     config.ProcessFunc,
 		healthCheckFunc: config.HealthCheckFunc,
 	}, nil
