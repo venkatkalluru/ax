@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // Package agent provides interfaces and implementations for local and remote agents.
-// Agents process content through callback handlers and can be registered with the dispatcher.
+// Agents process content through callback handlers and can be registered with the controller.
 package agent
 
 import (

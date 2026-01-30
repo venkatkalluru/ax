@@ -35,23 +35,23 @@ type server struct {
 }
 
 // Process implements bidirectional streaming for content processing.
-// This RPC is called by the gar dispatcher when a session triggers this agent.
+// This RPC is called by the gar controller when a session triggers this agent.
 func (s *server) Process(stream proto.AgentService_ProcessServer) error {
-	log.Println("Process stream started - gar dispatcher connected")
+	log.Println("Process stream started - gar controller connected")
 
 	for {
-		// Receive input content from gar dispatcher
+		// Receive input content from gar controller
 		content, err := stream.Recv()
 		if err == io.EOF {
-			log.Println("Process stream closed by gar dispatcher")
+			log.Println("Process stream closed by gar controller")
 			return nil
 		}
 		if err != nil {
-			log.Printf("Error receiving from dispatcher: %v", err)
+			log.Printf("Error receiving from controller: %v", err)
 			return err
 		}
 
-		log.Printf("Received from dispatcher: role=%s, type=%s, data=%s",
+		log.Printf("Received from controller: role=%s, type=%s, data=%s",
 			content.Role, content.Type, content.Data)
 
 		// Process the content (simple uppercase echo)
@@ -62,13 +62,13 @@ func (s *server) Process(stream proto.AgentService_ProcessServer) error {
 			Data:     fmt.Sprintf("Remote Echo: %s", strings.ToUpper(content.Data)),
 		}
 
-		// Send response back to gar dispatcher
+		// Send response back to gar controller
 		if err := stream.Send(response); err != nil {
-			log.Printf("Error sending to dispatcher: %v", err)
+			log.Printf("Error sending to controller: %v", err)
 			return err
 		}
 
-		log.Printf("Sent to dispatcher: %s", response.Data)
+		log.Printf("Sent to controller: %s", response.Data)
 	}
 }
 

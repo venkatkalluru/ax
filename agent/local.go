@@ -22,7 +22,7 @@ import (
 )
 
 // LocalAgent wraps a local (in-process) agent implementation.
-// It implements the Agent interface for agents running in the same process as the dispatcher.
+// It implements the Agent interface for agents running in the same process as the controller.
 type LocalAgent struct {
 	processFunc     func(ctx context.Context, sessionID string, inputs []*proto.Content, handler OutputHandler) error
 	healthCheckFunc func(ctx context.Context) error

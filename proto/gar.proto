@@ -42,7 +42,7 @@ message HealthCheckResponse {
 
 // AgentService defines the gRPC service for agent communication
 service AgentService {
-  // Process handles bidirectional streaming of content between dispatcher and agent
+  // Process handles bidirectional streaming of content between controller and agent
   rpc Process(stream Content) returns (stream Content);
 
   // HealthCheck checks if the agent is healthy and responsive

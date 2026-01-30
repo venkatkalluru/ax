@@ -22,6 +22,7 @@ package proto
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -43,7 +44,7 @@ const (
 //
 // AgentService defines the gRPC service for agent communication
 type AgentServiceClient interface {
-	// Process handles bidirectional streaming of content between dispatcher and agent
+	// Process handles bidirectional streaming of content between controller and agent
 	Process(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[Content, Content], error)
 	// HealthCheck checks if the agent is healthy and responsive
 	HealthCheck(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error)
@@ -86,7 +87,7 @@ func (c *agentServiceClient) HealthCheck(ctx context.Context, in *HealthCheckReq
 //
 // AgentService defines the gRPC service for agent communication
 type AgentServiceServer interface {
-	// Process handles bidirectional streaming of content between dispatcher and agent
+	// Process handles bidirectional streaming of content between controller and agent
 	Process(grpc.BidiStreamingServer[Content, Content]) error
 	// HealthCheck checks if the agent is healthy and responsive
 	HealthCheck(context.Context, *HealthCheckRequest) (*HealthCheckResponse, error)

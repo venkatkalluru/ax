@@ -100,7 +100,7 @@ func (s *Server) GetSession(ctx context.Context, req *proto.GetSessionRequest) (
 	}, nil
 }
 
-// RegisterAgent registers a new remote agent with the dispatcher.
+// RegisterAgent registers a new remote agent with the controller.
 func (s *Server) RegisterAgent(ctx context.Context, req *proto.RegisterAgentRequest) (*proto.RegisterAgentResponse, error) {
 	if req.AgentId == "" {
 		return nil, fmt.Errorf("agent_id is required")
@@ -127,7 +127,7 @@ func (s *Server) RegisterAgent(ctx context.Context, req *proto.RegisterAgentRequ
 	return &proto.RegisterAgentResponse{}, nil
 }
 
-// UnregisterAgent removes a remote agent from the dispatcher.
+// UnregisterAgent removes a remote agent from the controller.
 // Local agents cannot be unregistered via this API.
 func (s *Server) UnregisterAgent(ctx context.Context, req *proto.UnregisterAgentRequest) (*proto.UnregisterAgentResponse, error) {
 	if req.AgentId == "" {
