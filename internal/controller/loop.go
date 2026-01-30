@@ -116,7 +116,7 @@ func (e *LoopExecutor) runLoop(ctx context.Context, session *Session, handler ag
 			}
 			return nil
 		}
-		if err := e.executeTask(ctx, session.ID, task, taskOutputHandler); err != nil {
+		if err := e.executeTask(ctx, session.ID(), task, taskOutputHandler); err != nil {
 			return err
 		}
 

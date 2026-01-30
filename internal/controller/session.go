@@ -28,7 +28,7 @@ import (
 // Session represents an agentic loop execution session.
 // It maintains in-memory state and uses event log for durability.
 type Session struct {
-	ID string
+	id string
 
 	mu             sync.RWMutex
 	eventLog       eventlog.EventLog
@@ -75,7 +75,7 @@ func (sm *SessionManager) NewSession(sessionID string) (*Session, error) {
 
 	now := time.Now()
 	session := &Session{
-		ID:             sessionID,
+		id:             sessionID,
 		state:          proto.State_STATE_UNSPECIFIED,
 		currentStep:    0,
 		activeAgents:   []string{},
@@ -119,7 +119,7 @@ func (sm *SessionManager) LoadSessionFromCheckpoint(ctx context.Context, session
 
 	// Reconstruct session state from event log
 	session := &Session{
-		ID:             sessionID,
+		id:             sessionID,
 		state:          state,
 		currentStep:    0,
 		activeAgents:   []string{},
@@ -285,6 +285,10 @@ func (s *Session) SetState(ctx context.Context, state proto.State) error {
 	s.state = state
 	s.updatedAt = time.Now()
 	return nil
+}
+
+func (s *Session) ID() string {
+	return s.id
 }
 
 func (s *Session) State() proto.State {
