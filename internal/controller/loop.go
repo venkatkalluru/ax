@@ -58,7 +58,7 @@ func NewLoopExecutor(ctx context.Context, config LoopConfig) (*LoopExecutor, err
 		return nil, fmt.Errorf("session manager cannot be nil")
 	}
 	if config.MaxSteps == 0 {
-		config.MaxSteps = 100 // Default max steps per trigger
+		config.MaxSteps = 10 // Default max steps per trigger
 	}
 
 	// Provide default plan function if not specified
