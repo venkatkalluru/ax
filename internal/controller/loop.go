@@ -109,8 +109,9 @@ func (e *LoopExecutor) runLoop(ctx context.Context, session *Session, handler ag
 
 		outputs, err := e.executeTask(ctx, session.ID, task)
 		if err != nil {
-			return fmt.Errorf("task execution failed: %w", err)
+			return err
 		}
+
 		for _, output := range outputs {
 			if _, err := session.WriteContentOut(ctx, output); err != nil {
 				return fmt.Errorf("failed to write output content: %w", err)
@@ -119,8 +120,6 @@ func (e *LoopExecutor) runLoop(ctx context.Context, session *Session, handler ag
 				return fmt.Errorf("output handler error: %w", err)
 			}
 		}
-
-		// Phase 4: Advance step counters
 		steps++
 	}
 
@@ -137,8 +136,6 @@ func (e *LoopExecutor) executeTask(ctx context.Context, sessionID string, task *
 	}
 
 	var outputs []*proto.Content
-
-	// Define output handler to collect responses
 	outputHandler := func(content *proto.Content) error {
 		outputs = append(outputs, content)
 		return nil

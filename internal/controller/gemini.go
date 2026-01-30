@@ -24,8 +24,6 @@ import (
 	"google.golang.org/genai"
 )
 
-const noActionAgentID = "no-action-agent"
-
 // GeminiPlannerConfig configures the Gemini-based planner.
 type GeminiPlannerConfig struct {
 	APIKey       string        // Google AI API key (for programmatic use only; if empty, uses GEMINI_API_KEY env var - recommended)
@@ -67,11 +65,11 @@ Available agents have been provided to you as function tools. Each agent has:
 Your job is to:
 1. Analyze the current conversation context and understand what needs to be done
 2. Select the best agent for the task by calling the appropriate function
-3. If enough work is done, call the no-action-agent to indicate completion
+3. If enough work is done, stop to indicate completion
 
 Guidelines:
 - Choose agents based on their capabilities and the user's needs
-- If no suitable agent exists, call no-action-agent to indicate completion
+- If no suitable agent exists, stop.
 - Keep the conversation context in mind when selecting agents`
 	}
 
@@ -93,14 +91,6 @@ Guidelines:
 		if err != nil {
 			return nil, fmt.Errorf("failed to convert agents to tools: %w", err)
 		}
-		tools = append(tools, &genai.Tool{
-			FunctionDeclarations: []*genai.FunctionDeclaration{
-				{
-					Name:        noActionAgentID,
-					Description: "Call this when no agents need to be invoked and the task is complete",
-				},
-			},
-		})
 
 		// Convert session to conversation history
 		contents := protoToContents(inputs)
@@ -119,6 +109,9 @@ Guidelines:
 		}
 		candidate := resp.Candidates[0]
 		if candidate.Content == nil || candidate.Content.Parts == nil {
+			if candidate.FinishReason == genai.FinishReasonStop {
+				return nil, nil // No more tasks
+			}
 			return nil, fmt.Errorf("no content in candidates from Gemini")
 		}
 
@@ -129,9 +122,6 @@ Guidelines:
 			}
 
 			if fc := part.FunctionCall; fc != nil {
-				if fc.Name == noActionAgentID {
-					return nil, nil // No more tasks
-				}
 				return &Task{
 					AgentID: fc.Name,
 					Inputs:  inputs,
