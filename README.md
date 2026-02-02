@@ -368,7 +368,6 @@ def health_check():
 
 # Create and start the agent
 agent = Agent(
-    agent_id="python-agent",
     process_func=process,
     health_check_func=health_check
 )
@@ -382,7 +381,7 @@ python agent.py
 
 # Register with gar (in another terminal)
 gar register \
-  --agent-id python-agent \
+  --agent-id "text-processing-agent" \
   --agent-name "Text Processing Agent" \
   --agent-description "An agent that processes text" \
   --agent-addr localhost:50051
